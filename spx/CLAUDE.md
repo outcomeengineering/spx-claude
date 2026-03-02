@@ -14,18 +14,15 @@ spx/
   NN-{slug}.adr.md                    # Product-wide decisions (interleaved)
   NN-{slug}.capability/
     {slug}.capability.md
-    tests/
-      *.{unit,integration,e2e}.test.{ts,py}
+    tests/                            # See Test Naming Convention below
     NN-{slug}.adr.md
     NN-{slug}.feature/
       {slug}.feature.md
-      tests/
-        *.{unit,integration,e2e}.test.{ts,py}
+      tests/                          # See Test Naming Convention below
       NN-{slug}.adr.md
       NN-{slug}.story/
         {slug}.story.md
-        tests/
-          *.{unit,integration,e2e}.test.{ts,py}
+        tests/                        # See Test Naming Convention below
 ```
 
 ---
@@ -103,13 +100,23 @@ spx/
 
 ## Test Naming Convention
 
-Test level is in the filename suffix:
+Test level is encoded in the filename. Naming patterns vary by language — **delete sections that don't apply to your project.**
 
-| Level       | Suffix                       | What It Tests                                      |
-| ----------- | ---------------------------- | -------------------------------------------------- |
-| Unit        | `*.unit.test.{ts,py}`        | Pure logic, no external dependencies               |
-| Integration | `*.integration.test.{ts,py}` | Real dependencies (databases, binaries, harnesses) |
-| E2E         | `*.e2e.test.{ts,py}`         | Complete user workflows, real credentials          |
+### TypeScript
+
+| Level       | Pattern                      | Example                   |
+| ----------- | ---------------------------- | ------------------------- |
+| Unit        | `{slug}.unit.test.ts`        | `parsing.unit.test.ts`    |
+| Integration | `{slug}.integration.test.ts` | `cli.integration.test.ts` |
+| E2E         | `{slug}.e2e.test.ts`         | `workflow.e2e.test.ts`    |
+
+### Python
+
+| Level       | Pattern                      | Example                   |
+| ----------- | ---------------------------- | ------------------------- |
+| Unit        | `test_{slug}_unit.py`        | `test_parsing_unit.py`    |
+| Integration | `test_{slug}_integration.py` | `test_cli_integration.py` |
+| E2E         | `test_{slug}_e2e.py`         | `test_workflow_e2e.py`    |
 
 **Any test level can exist at any container level.** A capability may have unit tests; a story may have integration tests. The level describes what KIND of test, not where it lives.
 
@@ -125,6 +132,8 @@ Spec files must reference their tests via relative Markdown links:
 - [Unit: flag parsing](tests/parsing.unit.test.ts)
 - [Integration: CLI validation](tests/cli.integration.test.ts)
 ```
+
+File names follow the language-specific patterns from the Test Naming Convention section above.
 
 This creates a verifiable contract between specs and tests.
 

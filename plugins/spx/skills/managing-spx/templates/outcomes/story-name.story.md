@@ -1,3 +1,8 @@
+<!-- Test file naming varies by language. See spx/CLAUDE.md for conventions.
+     TypeScript: tests/{slug}.unit.test.ts    tests/{slug}.integration.test.ts    tests/{slug}.e2e.test.ts
+     Python:     tests/test_{slug}_unit.py     tests/test_{slug}_integration.py    tests/test_{slug}_e2e.py
+     Tables below use logical names. Resolve to actual filenames when instantiating. -->
+
 # Story: [Story Name]
 
 ## Purpose
@@ -17,23 +22,23 @@ AND [additional assertion]
 
 #### Test Files
 
-| File                                     | Level | Harness |
-| ---------------------------------------- | ----- | ------- |
-| [{slug}.unit](tests/{slug}.unit.test.ts) | 1     | -       |
+| File        | Level | Harness |
+| ----------- | ----- | ------- |
+| {slug}.unit | 1     | -       |
 
 #### Analysis
 
 *Implementation may diverge as understanding deepens.*
 
-| File               | Intent         |
-| ------------------ | -------------- |
-| `src/path/file.ts` | [What changes] |
-| `src/path/new.ts`  | [What it does] |
+| File            | Intent         |
+| --------------- | -------------- |
+| `src/path/file` | [What changes] |
+| `src/path/new`  | [What it does] |
 
-| Constant                            | Intent                    |
-| ----------------------------------- | ------------------------- |
-| `src/path/constants.ts::CONST_NAME` | [Why using existing]      |
-| `src/path/constants.ts::NEW_CONST`  | [Why new constant needed] |
+| Constant                         | Intent                    |
+| -------------------------------- | ------------------------- |
+| `src/path/constants::CONST_NAME` | [Why using existing]      |
+| `src/path/constants::NEW_CONST`  | [Why new constant needed] |
 
 | Config Parameter | Test Values      | Expected Behavior   |
 | ---------------- | ---------------- | ------------------- |
@@ -51,21 +56,21 @@ AND [additional assertion]
 
 #### Test Files
 
-| File                                                   | Level | Harness                                                                 |
-| ------------------------------------------------------ | ----- | ----------------------------------------------------------------------- |
-| [{slug}.integration](tests/{slug}.integration.test.ts) | 2     | [harness-name](spx/NN-test-infrastructure.capability/NN-{name}.feature) |
+| File               | Level | Harness                                                                 |
+| ------------------ | ----- | ----------------------------------------------------------------------- |
+| {slug}.integration | 2     | [harness-name](spx/NN-test-infrastructure.capability/NN-{name}.feature) |
 
 #### Analysis
 
 *Implementation may diverge as understanding deepens.*
 
-| File               | Intent         |
-| ------------------ | -------------- |
-| `src/path/file.ts` | [What changes] |
+| File            | Intent         |
+| --------------- | -------------- |
+| `src/path/file` | [What changes] |
 
-| Constant                          | Intent |
-| --------------------------------- | ------ |
-| `src/path/constants.ts::EXISTING` | [Why]  |
+| Constant                       | Intent |
+| ------------------------------ | ------ |
+| `src/path/constants::EXISTING` | [Why]  |
 
 *No configuration for this outcome.*
 

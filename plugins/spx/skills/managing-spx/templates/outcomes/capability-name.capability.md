@@ -1,3 +1,8 @@
+<!-- Test file naming varies by language. See spx/CLAUDE.md for conventions.
+     TypeScript: tests/{slug}.unit.test.ts    tests/{slug}.integration.test.ts    tests/{slug}.e2e.test.ts
+     Python:     tests/test_{slug}_unit.py     tests/test_{slug}_integration.py    tests/test_{slug}_e2e.py
+     Tables below use logical names. Resolve to actual filenames when instantiating. -->
+
 # Capability: [Capability Name]
 
 ## Purpose
@@ -37,9 +42,9 @@ WHEN [complete user workflow]
 THEN [value delivered to user]
 ```
 
-| File                                   | Level | Harness                                                                     |
-| -------------------------------------- | ----- | --------------------------------------------------------------------------- |
-| [{slug}.e2e](tests/{slug}.e2e.test.ts) | 3     | [e2e-harness](spx/NN-test-infrastructure.capability/NN-e2e-harness.feature) |
+| File       | Level | Harness                                                                     |
+| ---------- | ----- | --------------------------------------------------------------------------- |
+| {slug}.e2e | 3     | [e2e-harness](spx/NN-test-infrastructure.capability/NN-e2e-harness.feature) |
 
 ---
 
@@ -51,9 +56,9 @@ WHEN [user action]
 THEN [expected behavior]
 ```
 
-| File                                           | Level | Harness                                                                     |
-| ---------------------------------------------- | ----- | --------------------------------------------------------------------------- |
-| [{slug}-alt.e2e](tests/{slug}-alt.e2e.test.ts) | 3     | [e2e-harness](spx/NN-test-infrastructure.capability/NN-e2e-harness.feature) |
+| File           | Level | Harness                                                                     |
+| -------------- | ----- | --------------------------------------------------------------------------- |
+| {slug}-alt.e2e | 3     | [e2e-harness](spx/NN-test-infrastructure.capability/NN-e2e-harness.feature) |
 
 ---
 

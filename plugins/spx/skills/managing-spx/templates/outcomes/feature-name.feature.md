@@ -1,3 +1,8 @@
+<!-- Test file naming varies by language. See spx/CLAUDE.md for conventions.
+     TypeScript: tests/{slug}.unit.test.ts    tests/{slug}.integration.test.ts    tests/{slug}.e2e.test.ts
+     Python:     tests/test_{slug}_unit.py     tests/test_{slug}_integration.py    tests/test_{slug}_e2e.py
+     Tables below use logical names. Resolve to actual filenames when instantiating. -->
+
 # Feature: [Feature Name]
 
 ## Purpose
@@ -29,9 +34,9 @@ WHEN [feature action]
 THEN [integrated behavior verified]
 ```
 
-| File                                                   | Level | Harness                                                                 |
-| ------------------------------------------------------ | ----- | ----------------------------------------------------------------------- |
-| [{slug}.integration](tests/{slug}.integration.test.ts) | 2     | [harness-name](spx/NN-test-infrastructure.capability/NN-{name}.feature) |
+| File               | Level | Harness                                                                 |
+| ------------------ | ----- | ----------------------------------------------------------------------- |
+| {slug}.integration | 2     | [harness-name](spx/NN-test-infrastructure.capability/NN-{name}.feature) |
 
 ---
 
@@ -41,9 +46,9 @@ THEN [integrated behavior verified]
 
 **Predicate:** [what the oracle checks]
 
-| File                                                                   | Level | Harness                                                                 |
-| ---------------------------------------------------------------------- | ----- | ----------------------------------------------------------------------- |
-| [{slug}-quality.integration](tests/{slug}-quality.integration.test.ts) | 2     | [harness-name](spx/NN-test-infrastructure.capability/NN-{name}.feature) |
+| File                       | Level | Harness                                                                 |
+| -------------------------- | ----- | ----------------------------------------------------------------------- |
+| {slug}-quality.integration | 2     | [harness-name](spx/NN-test-infrastructure.capability/NN-{name}.feature) |
 
 ---
 

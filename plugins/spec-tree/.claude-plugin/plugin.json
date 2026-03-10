@@ -1,0 +1,18 @@
+{
+  "name": "spec-tree",
+  "version": "0.1.0",
+  "description": "Spec Tree: git-native product structure with enabler/outcome nodes, lock files, and deterministic context",
+  "author": {
+    "name": "Simon Heimlicher"
+  },
+  "repository": "https://github.com/simonheimlicher/spx-claude",
+  "license": "MIT",
+  "keywords": [
+    "spec-tree",
+    "outcome-engineering",
+    "enabler",
+    "outcome",
+    "lock-files",
+    "deterministic-context"
+  ]
+}

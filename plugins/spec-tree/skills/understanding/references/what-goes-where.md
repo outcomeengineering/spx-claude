@@ -1,0 +1,135 @@
+<overview>
+
+Every artifact in the Spec Tree has a specific purpose. Content placed in the wrong artifact creates confusion and duplication.
+
+| Artifact type    | Purpose                    | Contains                         | Verified by             |
+| ---------------- | -------------------------- | -------------------------------- | ----------------------- |
+| **ADR**          | GOVERNS how (architecture) | Decisions, rationale, invariants | Architecture review     |
+| **PDR**          | GOVERNS what (product)     | Constraints, product invariants  | Product review          |
+| **Enabler spec** | DESCRIBES infrastructure   | What it provides, assertions     | Tests + lock file       |
+| **Outcome spec** | DESCRIBES hypothesis       | Outcome belief, assertions       | Tests + lock file       |
+| **Test**         | PROVES assertions          | Test code                        | Test runner + lock file |
+| **Lock file**    | RECORDS agreement          | Blob hashes                      | `spx verify`            |
+
+</overview>
+
+<adr>
+
+**Purpose:** GOVERNS how things are built. Constrains architecture, not product behavior.
+
+**Contains:**
+
+- Purpose — what concern this decision governs
+- Context — business impact and technical constraints
+- Decision — the chosen approach in one sentence
+- Rationale — why this is right given constraints
+- Trade-offs accepted — what was given up and why
+- Invariants — algebraic properties that must hold
+- Compliance — executable verification criteria (MUST / NEVER rules)
+
+**Does NOT contain:** Outcomes, assertions, test references, or implementation code.
+
+**Verified by:** Architecture review skills (e.g., `/reviewing-typescript-architecture`).
+
+</adr>
+
+<pdr>
+
+**Purpose:** GOVERNS what the product does. Establishes product constraints that must hold across a subtree.
+
+**Contains:**
+
+- Purpose — what product behavior this decision governs
+- Context — business impact and technical constraints
+- Decision — the chosen approach in one sentence
+- Rationale — why this is right for users
+- Trade-offs accepted — what was given up and why
+- Product invariants — observable behaviors users can always rely on
+- Compliance — product behavior validation criteria (MUST / NEVER rules)
+
+**Does NOT contain:** Outcomes, assertions, test references, or implementation code.
+
+**Verified by:** Product/UX review.
+
+</pdr>
+
+<enabler_spec>
+
+**Purpose:** DESCRIBES what infrastructure this node provides to its dependents.
+
+**Contains:**
+
+- What this enabler provides and why dependents need it
+- Assertions with test links — what must be true about this infrastructure
+
+**Does NOT contain:** Outcome hypotheses, user behavior claims.
+
+</enabler_spec>
+
+<outcome_spec>
+
+**Purpose:** DESCRIBES a hypothesis about what change a behavior will produce.
+
+**Contains:**
+
+- Outcome hypothesis — "We believe that [X] will [Y]"
+- Assertions with test links — testable claims that define the output
+
+**Does NOT contain:** Architecture decisions (→ ADR), product constraints (→ PDR), implementation details.
+
+</outcome_spec>
+
+<test_files>
+
+**Purpose:** PROVES that assertions hold.
+
+**Contains:** Test code organized by level:
+
+| Level       | Suffix                    | Question                             |
+| ----------- | ------------------------- | ------------------------------------ |
+| Unit        | `.unit.test.{ext}`        | Is our logic correct?                |
+| Integration | `.integration.test.{ext}` | Does it work with real dependencies? |
+| E2E         | `.e2e.test.{ext}`         | Does it work for users?              |
+
+**Does NOT contain:** Spec content, decision rationale, or anything other than test code.
+
+</test_files>
+
+<lock_file>
+
+**Purpose:** RECORDS that spec and tests were in agreement at the time of writing.
+
+**Contains:** Git blob hashes for the spec file and each test file.
+
+**Does NOT contain:** Test results, timestamps, or any mutable state.
+
+**Written by:** `spx lock` (only when all tests pass).
+
+</lock_file>
+
+<flow>
+
+```text
+ADR/PDR ──governs──→ Spec ──asserts──→ Test ──proves──→ Lock
+                      │                  │                │
+                      │                  │                │
+                 "what should       "does it          "were they
+                  be true"          hold?"            in agreement?"
+```
+
+</flow>
+
+<common_misplacements>
+
+| Content                  | Wrong location | Correct location |
+| ------------------------ | -------------- | ---------------- |
+| Architecture choice      | Spec           | ADR              |
+| Product constraint       | Spec           | PDR              |
+| Outcome hypothesis       | ADR            | Outcome spec     |
+| Test reference           | ADR/PDR        | Spec assertions  |
+| Implementation detail    | Spec           | Code (not spec)  |
+| "How to build it"        | Spec           | ADR or code      |
+| "What users can rely on" | Spec           | PDR              |
+| Cross-cutting invariant  | Child spec     | Ancestor spec    |
+
+</common_misplacements>

@@ -2,14 +2,13 @@
 
 Every artifact in the Spec Tree has a specific purpose. Content placed in the wrong artifact creates confusion and duplication.
 
-| Artifact type    | Purpose                    | Contains                         | Verified by             |
-| ---------------- | -------------------------- | -------------------------------- | ----------------------- |
-| **ADR**          | GOVERNS how (architecture) | Decisions, rationale, invariants | Architecture review     |
-| **PDR**          | GOVERNS what (product)     | Constraints, product invariants  | Product review          |
-| **Enabler spec** | DESCRIBES infrastructure   | What it provides, assertions     | Tests + lock file       |
-| **Outcome spec** | DESCRIBES hypothesis       | Outcome belief, assertions       | Tests + lock file       |
-| **Test**         | PROVES assertions          | Test code                        | Test runner + lock file |
-| **Lock file**    | RECORDS agreement          | Blob hashes                      | `spx verify`            |
+| Artifact type    | Purpose                    | Contains                         | Verified by         |
+| ---------------- | -------------------------- | -------------------------------- | ------------------- |
+| **ADR**          | GOVERNS how (architecture) | Decisions, rationale, invariants | Architecture review |
+| **PDR**          | GOVERNS what (product)     | Constraints, product invariants  | Product review      |
+| **Enabler spec** | DESCRIBES infrastructure   | What it provides, assertions     | Tests               |
+| **Outcome spec** | DESCRIBES hypothesis       | Outcome belief, assertions       | Tests               |
+| **Test**         | PROVES assertions          | Test code                        | Test runner         |
 
 </overview>
 
@@ -95,26 +94,14 @@ Every artifact in the Spec Tree has a specific purpose. Content placed in the wr
 
 </test_files>
 
-<lock_file>
-
-**Purpose:** RECORDS that spec and tests were in agreement at the time of writing.
-
-**Contains:** Git blob hashes for the spec file and each test file.
-
-**Does NOT contain:** Test results, timestamps, or any mutable state.
-
-**Written by:** `spx lock` (only when all tests pass).
-
-</lock_file>
-
 <flow>
 
 ```text
-ADR/PDR ──governs──→ Spec ──asserts──→ Test ──proves──→ Lock
-                      │                  │                │
-                      │                  │                │
-                 "what should       "does it          "were they
-                  be true"          hold?"            in agreement?"
+ADR/PDR ──governs──→ Spec ──asserts──→ Test
+                      │                  │
+                      │                  │
+                 "what should       "does it
+                  be true"          hold?"
 ```
 
 </flow>

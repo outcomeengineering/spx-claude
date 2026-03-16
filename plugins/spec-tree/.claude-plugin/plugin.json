@@ -1,7 +1,7 @@
 {
   "name": "spec-tree",
-  "version": "0.2.0",
-  "description": "Spec Tree: git-native product structure with enabler/outcome nodes, lock files, and deterministic context",
+  "version": "0.3.0",
+  "description": "Spec Tree: git-native product structure with enabler/outcome nodes and deterministic context",
   "author": {
     "name": "Simon Heimlicher"
   },
@@ -12,7 +12,6 @@
     "outcome-engineering",
     "enabler",
     "outcome",
-    "lock-files",
     "deterministic-context"
   ]
 }

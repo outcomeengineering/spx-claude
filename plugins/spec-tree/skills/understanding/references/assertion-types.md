@@ -34,9 +34,9 @@ A scenario describes a concrete interaction in natural language.
 A mapping defines input-output correspondence across a known set of values. Often expressed as a table.
 
 ```markdown
-- Node with no lock file maps to "needs work" ([test](tests/status.unit.test.ts))
-- Node with matching blobs maps to "valid" ([test](tests/status.unit.test.ts))
-- Node with mismatched blobs maps to "stale" ([test](tests/status.unit.test.ts))
+- HTTP 200 with JSON body maps to "success" response ([test](tests/api.unit.test.ts))
+- HTTP 404 maps to "not found" error ([test](tests/api.unit.test.ts))
+- HTTP 422 with validation errors maps to "invalid input" response ([test](tests/api.unit.test.ts))
 ```
 
 **Test strategy:** Parameterized tests. Each row in the mapping becomes a test case.
@@ -52,7 +52,7 @@ A mapping defines input-output correspondence across a known set of values. Ofte
 A conformance assertion states that output must match an external standard, schema, or reference.
 
 ```markdown
-- Lock file conforms to spx-lock/v1 schema ([test](tests/schema.unit.test.ts))
+- API response conforms to OpenAPI v3.1 schema ([test](tests/schema.unit.test.ts))
 - Output conforms to POSIX exit code conventions ([test](tests/exit-codes.unit.test.ts))
 ```
 
@@ -69,7 +69,7 @@ A conformance assertion states that output must match an external standard, sche
 A property assertion states something that must be true for all valid inputs, not just specific examples.
 
 ```markdown
-- Lock file is deterministic: same spec and test content always produces the same lock ([test](tests/lock.unit.test.ts))
+- Serialization is deterministic: same input always produces the same output ([test](tests/serialize.unit.test.ts))
 - Ordering is transitive: if A constrains B and B constrains C, then A constrains C ([test](tests/ordering.unit.test.ts))
 ```
 
@@ -122,7 +122,7 @@ A single spec can contain assertions of different types. Group them under typed 
 
 ### Mappings
 
-- State mapping: no lock = needs-work, matching = valid, mismatched = stale ([test](tests/status.unit.test.ts))
+- HTTP status mapping: 200 = success, 404 = not-found, 422 = invalid ([test](tests/api.unit.test.ts))
 
 ### Properties
 

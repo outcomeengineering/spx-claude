@@ -4,13 +4,9 @@ description: Create timestamped handoff document for continuing work in a fresh 
 argument-hint: [--prune]
 allowed-tools:
   - Read
-  - Write
+  - Edit
   - Glob
-  - Bash(date:*)
-  - Bash(mkdir:*)
-  - Bash(mv:*)
-  - Bash(rm:*)
-  - Bash(find:*)
+  - Bash(spx:*)
   - Bash(git:*)
 ---
 
@@ -34,53 +30,34 @@ Create a comprehensive, detailed handoff document with UTC timestamp that captur
 
 ## Session Operations
 
-All session management uses direct filesystem operations — no external CLI required.
+All session management uses `spx session` CLI commands.
 
 ### Directory Structure
 
-Sessions are organized by status in subdirectories:
-
-```
+```text
 .spx/sessions/
 ├── todo/      # Available for pickup
 ├── doing/     # Currently claimed
 └── archive/   # Completed
 ```
 
-### Creating a Session
+### CLI Commands
 
 ```bash
-# 1. Generate timestamp-based session ID
-date -u +%Y-%m-%d_%H-%M-%S
-# Output example: 2026-01-17_15-11-02
+# Create a new session (returns <HANDOFF_ID> and <SESSION_FILE>)
+spx session handoff
 
-# 2. Ensure directory exists
-mkdir -p .spx/sessions/todo
-```
+# List sessions by status
+spx session list [--status todo|doing|archive]
 
-Then use the **Write** tool to create the session file at `.spx/sessions/todo/<session-id>.md`.
+# Archive a doing session
+spx session archive <session-id>
 
-### Listing Sessions
+# Prune old archive sessions
+spx session prune
 
-```bash
-# All sessions (shows status via path)
-find .spx/sessions -name '*.md' -type f 2>/dev/null | sort
-
-# By status
-find .spx/sessions/todo -name '*.md' -type f 2>/dev/null | sort
-find .spx/sessions/doing -name '*.md' -type f 2>/dev/null | sort
-find .spx/sessions/archive -name '*.md' -type f 2>/dev/null | sort
-```
-
-### Moving Sessions Between Statuses
-
-```bash
-# Archive a doing session (use -i to avoid clobbering)
-mkdir -p .spx/sessions/archive
-mv -i .spx/sessions/doing/<session-id>.md .spx/sessions/archive/<session-id>.md
-
-# Delete an archive session
-rm .spx/sessions/archive/<session-id>.md
+# Delete a session
+spx session delete <session-id>
 ```
 
 </session_management>
@@ -224,35 +201,39 @@ tags: [optional, tags]
 
 1. **Check for claimed session to cleanup**: Search conversation history for `<PICKUP_ID>` marker from a previous `/pickup`. This is the doing session to archive after creating the new handoff.
 
-2. **Gather context**: Collect all information from current conversation for the handoff content.
+2. **Gather context**: Collect all information from current conversation for the handoff content. Compose the full handoff text in your working memory following the `<output_format>` section — you will need it in step 4.
 
-3. **Generate session ID and ensure directory exists**:
-   ```bash
-   date -u +%Y-%m-%d_%H-%M-%S
-   ```
-   Save the output as the session ID (e.g., `2026-01-08_16-30-22`).
-   ```bash
-   mkdir -p .spx/sessions/todo
-   ```
+3. **Create the session file using `spx session handoff`**:
 
-4. **Write handoff content** using the Write tool to `.spx/sessions/todo/<session-id>.md`:
-   - Include YAML frontmatter with priority and optional tags
-   - Write the full handoff content (see output_format section)
-   - Emit: `<HANDOFF_ID><session-id></HANDOFF_ID>`
+   Run the CLI command. It creates the file and outputs two markers:
+   ```bash
+   spx session handoff
+   ```
+   Parse the output for:
+   - `<HANDOFF_ID>session-id</HANDOFF_ID>` — the session identifier
+   - `<SESSION_FILE>/path/to/file</SESSION_FILE>` — the absolute path to the created file
+
+   **Save both values.** You need the file path for the next two steps.
+
+4. **Read the created file, then edit it with handoff content**:
+
+   **Step 4a: Read the file** using the Read tool on the `<SESSION_FILE>` path from step 3. You MUST read it before editing — the Edit tool requires a prior read.
+
+   **Step 4b: Edit the file** using the Edit tool. Replace the file's content with your composed handoff text from step 2:
+   - YAML frontmatter with priority and tags
+   - All sections from `<output_format>`: metadata, original_task, work_completed, work_remaining, attempted_approaches, critical_context, current_state
+
+   **DO NOT use the Write tool.** The file already exists from step 3. Use Edit to replace its content.
 
 5. **Cleanup claimed session**: If a doing session was found in step 1, archive it:
    ```bash
-   mkdir -p .spx/sessions/archive
-   mv -i .spx/sessions/doing/<doing-session-id>.md .spx/sessions/archive/<doing-session-id>.md
+   spx session archive <doing-session-id>
    ```
    Report: "Cleaned up claimed session: [session-id]"
 
 6. **If `--prune` flag is present**:
    ```bash
-   # List archive sessions
-   find .spx/sessions/archive -name '*.md' -type f 2>/dev/null | sort
-   # Delete each archive session (safe - these are completed work)
-   rm .spx/sessions/archive/<archive-session-id>.md
+   spx session prune
    ```
    Report what was deleted. **Never delete todo or doing sessions** — they are the shared work queue.
 
@@ -266,21 +247,38 @@ tags: [optional, tags]
 
 Found in conversation: `<PICKUP_ID>2026-01-08_14-59-03</PICKUP_ID>`
 
-**Step 2: Generate session ID**
+**Step 2: Gather context and compose handoff text**
+
+Compose the full handoff content in working memory (all sections from output_format).
+
+**Step 3: Create the session file**
 
 ```bash
-date -u +%Y-%m-%d_%H-%M-%S
+spx session handoff
 ```
 
-Output: `2026-01-08_16-30-22`
+Output:
 
-```bash
-mkdir -p .spx/sessions/todo
+```text
+<HANDOFF_ID>2026-01-08_16-30-22</HANDOFF_ID>
+<SESSION_FILE>/Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md</SESSION_FILE>
 ```
 
-**Step 3: Write content using Write tool**
+**Step 4a: Read the created file**
 
-Write to `.spx/sessions/todo/2026-01-08_16-30-22.md`:
+```
+Read: /Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md
+```
+
+**Step 4b: Edit the file with handoff content**
+
+```
+Edit: /Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md
+old_string: (the default content from the created file)
+new_string: (full handoff content — frontmatter + all sections)
+```
+
+The file now contains:
 
 ```text
 ---
@@ -326,16 +324,13 @@ Refactor session management to use filesystem operations
 </current_state>
 ```
 
-Emit: `<HANDOFF_ID>2026-01-08_16-30-22</HANDOFF_ID>`
-
-**Step 4: Cleanup claimed session**
+**Step 5: Cleanup claimed session**
 
 ```bash
-mkdir -p .spx/sessions/archive
-mv -i .spx/sessions/doing/2026-01-08_14-59-03.md .spx/sessions/archive/2026-01-08_14-59-03.md
+spx session archive 2026-01-08_14-59-03
 ```
 
-**Step 5: Confirm to user**
+**Step 6: Confirm to user**
 
 "Handoff created: `2026-01-08_16-30-22`. Cleaned up claimed session: `2026-01-08_14-59-03`"
 

@@ -26,11 +26,13 @@
 
 ## Invariants
 
-{Algebraic properties that hold for ALL code governed by this ADR:}
+Only include if this decision establishes algebraic properties. Omit the section if none apply.
 
-- {invariant statement}
+- {invariant — algebraic property that holds for ALL code governed by this ADR}
 
 ## Compliance
+
+Only include subsections that apply. Omit empty subsections.
 
 ### Recognized by
 
@@ -38,8 +40,8 @@
 
 ### MUST
 
-- {rule} — {why this follows from the decision}
+- {rule} — {why this follows from the decision} ([review])
 
 ### NEVER
 
-- {prohibition} — {why this violates the decision}
+- {prohibition} — {why this violates the decision} ([review])

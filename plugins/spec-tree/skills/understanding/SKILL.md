@@ -66,8 +66,8 @@ Examples available in: examples/
 - [ ] Three core reference files read and understood
 - [ ] Operational reference, template, and example locations known
 - [ ] `<SPEC_TREE_FOUNDATION>` marker emitted
-- [ ] Can explain: What is an enabler? What is an outcome? When to use each?
-- [ ] Can explain: What does atemporal voice mean? Why does it matter?
-- [ ] Can explain: What are the five assertion types and when to use each?
+- [ ] Methodology loaded: enabler vs outcome distinction, three-part hypothesis structure
+- [ ] Methodology loaded: atemporal voice principle, prohibited temporal markers
+- [ ] Methodology loaded: five assertion types (scenario, mapping, conformance, property, compliance) and selection criteria
 
 </success_criteria>

@@ -18,7 +18,7 @@ Every assertion in a node spec must be one of five structured types. The first f
 A scenario describes a concrete interaction in natural language.
 
 ```markdown
-- Given a tree with all valid children, when status is computed, then the parent reports valid ([test](tests/status.unit.test.ts))
+- Given a tree with all valid children, when status is computed, then the parent reports valid ([test](tests/status.unit.test.{ext}))
 ```
 
 **Test strategy:** Example-based tests. Each scenario maps to one or more test cases with concrete inputs and expected outputs.
@@ -34,9 +34,9 @@ A scenario describes a concrete interaction in natural language.
 A mapping defines input-output correspondence across a known set of values. Often expressed as a table.
 
 ```markdown
-- HTTP 200 with JSON body maps to "success" response ([test](tests/api.unit.test.ts))
-- HTTP 404 maps to "not found" error ([test](tests/api.unit.test.ts))
-- HTTP 422 with validation errors maps to "invalid input" response ([test](tests/api.unit.test.ts))
+- HTTP 200 with JSON body maps to "success" response ([test](tests/api.unit.test.{ext}))
+- HTTP 404 maps to "not found" error ([test](tests/api.unit.test.{ext}))
+- HTTP 422 with validation errors maps to "invalid input" response ([test](tests/api.unit.test.{ext}))
 ```
 
 **Test strategy:** Parameterized tests. Each row in the mapping becomes a test case.
@@ -52,8 +52,8 @@ A mapping defines input-output correspondence across a known set of values. Ofte
 A conformance assertion states that output must match an external standard, schema, or reference.
 
 ```markdown
-- API response conforms to OpenAPI v3.1 schema ([test](tests/schema.unit.test.ts))
-- Output conforms to POSIX exit code conventions ([test](tests/exit-codes.unit.test.ts))
+- API response conforms to OpenAPI v3.1 schema ([test](tests/schema.unit.test.{ext}))
+- Output conforms to POSIX exit code conventions ([test](tests/exit-codes.unit.test.{ext}))
 ```
 
 **Test strategy:** Tool-based validation. Use schema validators, linters, or comparison against reference output.
@@ -69,8 +69,8 @@ A conformance assertion states that output must match an external standard, sche
 A property assertion states something that must be true for all valid inputs, not just specific examples.
 
 ```markdown
-- Serialization is deterministic: same input always produces the same output ([test](tests/serialize.unit.test.ts))
-- Ordering is transitive: if A constrains B and B constrains C, then A constrains C ([test](tests/ordering.unit.test.ts))
+- Serialization is deterministic: same input always produces the same output ([test](tests/serialize.unit.test.{ext}))
+- Ordering is transitive: if A constrains B and B constrains C, then A constrains C ([test](tests/ordering.unit.test.{ext}))
 ```
 
 **Test strategy:** Property-based testing (e.g., Hypothesis for Python, fast-check for TypeScript). Generate random valid inputs and verify the property holds.
@@ -87,7 +87,7 @@ A compliance assertion states a rule the node's output must always or never exhi
 
 ```markdown
 - ALWAYS: page presents the OSS tier as the full core toolchain — PDR-15 positions open-source as complete ([review](../../15-product-offering.pdr.md))
-- NEVER: reference XiperHLS — deferred per PDR-15 ([test](tests/open-source.unit.test.ts))
+- NEVER: reference XiperHLS — deferred per PDR-15 ([test](tests/open-source.unit.test.{ext}))
 ```
 
 **Test strategy:** Review (`[review]`) for semantic constraints requiring human or agent judgment. Test (`[test]`) when the constraint is automatable (e.g., string absence).
@@ -117,16 +117,16 @@ A single spec can contain assertions of different types. Group them under typed 
 
 ### Scenarios
 
-- Given a tree with one stale child, when status is computed, parent reports stale ([test](tests/status.unit.test.ts))
-- Given a tree with all valid children, when status is computed, parent reports valid ([test](tests/status.unit.test.ts))
+- Given a tree with one stale child, when status is computed, parent reports stale ([test](tests/status.unit.test.{ext}))
+- Given a tree with all valid children, when status is computed, parent reports valid ([test](tests/status.unit.test.{ext}))
 
 ### Mappings
 
-- HTTP status mapping: 200 = success, 404 = not-found, 422 = invalid ([test](tests/api.unit.test.ts))
+- HTTP status mapping: 200 = success, 404 = not-found, 422 = invalid ([test](tests/api.unit.test.{ext}))
 
 ### Properties
 
-- Status rollup is deterministic: same tree always produces same status ([test](tests/status.unit.test.ts))
+- Status rollup is deterministic: same tree always produces same status ([test](tests/status.unit.test.{ext}))
 ```
 
 Only include headings for assertion types that apply.

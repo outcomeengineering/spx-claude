@@ -26,11 +26,13 @@
 
 ## Product invariants
 
-{Observable behaviors that users can always rely on:}
+Only include if this decision establishes observable user-facing guarantees. Omit the section if none apply.
 
-- {invariant statement — what users can count on}
+- {observable user-facing behavior} — {why users can rely on this}
 
 ## Compliance
+
+Only include subsections that apply. Omit empty subsections.
 
 ### Recognized by
 
@@ -38,8 +40,8 @@
 
 ### MUST
 
-- {product behavior rule} — {why this follows from the decision}
+- {product behavior rule} — {why this follows from the decision} ([review])
 
 ### NEVER
 
-- {prohibited product behavior} — {why this violates the decision}
+- {prohibited product behavior} — {why this violates the decision} ([review])

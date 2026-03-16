@@ -8,14 +8,14 @@ If it contains multiple concerns, decompose into child nodes. Each child is eith
 
 <enabler_vs_outcome>
 
-| Question                                                    | Answer  |
-| ----------------------------------------------------------- | ------- |
-| Does it deliver user-facing value (directly or indirectly)? | Outcome |
-| Does it exist only to serve other nodes?                    | Enabler |
-| Would you remove it if all its dependents were retired?     | Enabler |
-| Does it express a hypothesis about user behavior change?    | Outcome |
+| Question                                                             | Answer  |
+| -------------------------------------------------------------------- | ------- |
+| Does it deliver user-facing value (directly or indirectly)?          | Outcome |
+| Does it exist only to serve other nodes?                             | Enabler |
+| Would you remove it if all its dependents were retired?              | Enabler |
+| Can you express a three-part hypothesis (output → outcome → impact)? | Outcome |
 
-When unclear, default to **outcome**. Outcomes are the primary building blocks. Enablers emerge when you notice shared infrastructure across siblings.
+When unclear, default to **outcome**. Outcomes are the primary building blocks — each expresses a hypothesis connecting a testable output to a measurable change in user behavior and its expected business impact. Enablers emerge when you notice shared infrastructure across siblings.
 
 </enabler_vs_outcome>
 
@@ -23,7 +23,7 @@ When unclear, default to **outcome**. Outcomes are the primary building blocks. 
 
 Decompose a node when:
 
-- It has more than ~7 assertions — the spec is doing too much
+- It has more than ~7 assertions across all types (scenarios, mappings, conformance, properties, compliance) — the spec is doing too much
 - Its deterministic context payload exceeds an agent's reliable working set
 - It contains independent concerns that could be validated separately
 - Two assertions in different parts of the spec have no relationship to each other

@@ -58,8 +58,8 @@ See `templates/nodes/outcome-name.md` for the spec format.
 NN-slug.{enabler|outcome}/
 ├── slug.md              # Spec file (no type suffix, no numeric prefix)
 ├── tests/               # Co-located test files
-│   ├── slug.unit.test.ts
-│   └── slug.integration.test.ts
+│   ├── {test files}     # Named by project convention (see below)
+│   └── ...
 └── NN-child.{enabler|outcome}/   # Nested child nodes (optional)
 ```
 
@@ -72,7 +72,10 @@ NN-slug.{enabler|outcome}/
 **Test files:**
 
 - Co-located in `tests/` within the node directory
-- Named with test level suffix: `.unit.test.{ext}`, `.integration.test.{ext}`, `.e2e.test.{ext}`
+- Must indicate test level (unit, integration, e2e) in the filename
+- Naming follows the project's language convention, e.g.:
+  - TypeScript: `slug.unit.test.ts`, `slug.integration.test.ts`
+  - Python: `test_slug_unit.py`, `test_slug_integration.py`
 - Assertions specify output, verified by test (`[test]`) or review (`[review]`)
 
 </common_structure>

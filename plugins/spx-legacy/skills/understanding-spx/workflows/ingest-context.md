@@ -323,7 +323,7 @@ Story Context Loaded: 30-build.story
 ## Hierarchy Chain
 ```
 
-Product (spx-claude)
+Product (claude)
 └── Capability 10: cli
 └── Feature 20: commands
 └── Story 30: build ← YOU ARE HERE

@@ -261,19 +261,19 @@ Output:
 
 ```text
 <HANDOFF_ID>2026-01-08_16-30-22</HANDOFF_ID>
-<SESSION_FILE>/Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md</SESSION_FILE>
+<SESSION_FILE>/Users/dev/claude/.spx/sessions/todo/2026-01-08_16-30-22.md</SESSION_FILE>
 ```
 
 **Step 4a: Read the created file**
 
 ```
-Read: /Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md
+Read: /Users/dev/claude/.spx/sessions/todo/2026-01-08_16-30-22.md
 ```
 
 **Step 4b: Edit the file with handoff content**
 
 ```
-Edit: /Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md
+Edit: /Users/dev/claude/.spx/sessions/todo/2026-01-08_16-30-22.md
 old_string: (the default content from the created file)
 new_string: (full handoff content — frontmatter + all sections)
 ```
@@ -287,10 +287,10 @@ tags: [refactor, testing]
 ---
 <metadata>
   timestamp: 2026-01-08T16:30:22Z
-  project: spx-claude
+  project: claude
   git_branch: main
   git_status: dirty
-  working_directory: /Users/dev/spx-claude
+  working_directory: /Users/dev/claude
 </metadata>
 
 <original_task>

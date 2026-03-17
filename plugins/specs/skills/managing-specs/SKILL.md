@@ -44,10 +44,10 @@ Use this exact path for all file access. Throughout this documentation, `${SKILL
 .claude/plugins/cache/{marketplace-name}/{plugin-name}/{version}/skills/managing-specs/
 ```
 
-**Example**: For spx-claude marketplace, specs plugin version 0.3.3:
+**Example**: For outcomeeng marketplace, specs plugin version 0.3.3:
 
 ```
-${SKILL_DIR} = .claude/plugins/cache/spx-claude/specs/0.3.3/skills/managing-specs/
+${SKILL_DIR} = .claude/plugins/cache/outcomeeng/specs/0.3.3/skills/managing-specs/
 ```
 
 </skill_directory_structure>
@@ -86,8 +86,8 @@ Read: ${SKILL_DIR}/templates/{category}/{template-name}
 # Example: Read feature template
 Read: ${SKILL_DIR}/templates/work-items/feature-name.feature.md
 
-# With actual path (example for spx-claude marketplace, version 0.3.3)
-Read: .claude/plugins/cache/spx-claude/specs/0.3.3/skills/managing-specs/templates/work-items/feature-name.feature.md
+# With actual path (example for outcomeeng marketplace, version 0.3.3)
+Read: .claude/plugins/cache/outcomeeng/specs/0.3.3/skills/managing-specs/templates/work-items/feature-name.feature.md
 ```
 
 </how_to_read_templates>

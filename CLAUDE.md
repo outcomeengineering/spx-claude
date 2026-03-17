@@ -765,7 +765,7 @@ Error: Bash command permission check failed for pattern "!find .spx/sessions -ma
 ### Quick Reference: File Locations
 
 ```
-spx-claude/
+claude/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace catalog
 ├── .spx/                          # Tool operational (gitignored)
@@ -820,7 +820,7 @@ spx-claude/
 │           └── (6 skills)
 ├── spx/                           # Specs as durable map (Outcome Engineering framework)
 │   ├── CLAUDE.md                 # Specs directory guide
-│   ├── spx-claude.prd.md         # Product requirements
+│   ├── claude.prd.md             # Product requirements
 │   ├── NN-{slug}.adr.md          # Product-wide ADRs (interleaved)
 │   └── NN-{slug}.capability/     # Capabilities with co-located tests
 │       ├── {slug}.capability.md

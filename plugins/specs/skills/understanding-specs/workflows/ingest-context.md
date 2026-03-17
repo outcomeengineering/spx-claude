@@ -315,7 +315,7 @@ Read: {story-path}/{slug}.story.md
 ## Hierarchy Chain
 ```
 
-Product (spx-claude)
+Product (claude)
 └── Capability 10: cli
 └── Feature 20: commands
 └── Story 30: build ← YOU ARE HERE

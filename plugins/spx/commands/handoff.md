@@ -248,12 +248,12 @@ Output:
 
 ```text
 Created handoff session <HANDOFF_ID>2026-01-08_16-30-22</HANDOFF_ID>
-<SESSION_FILE>/Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md</SESSION_FILE>
+<SESSION_FILE>/Users/dev/claude/.spx/sessions/todo/2026-01-08_16-30-22.md</SESSION_FILE>
 ```
 
 **Step 3: Write content to SESSION_FILE using Write tool**
 
-Write to `/Users/dev/spx-claude/.spx/sessions/todo/2026-01-08_16-30-22.md`:
+Write to `/Users/dev/claude/.spx/sessions/todo/2026-01-08_16-30-22.md`:
 
 ```text
 ---
@@ -262,10 +262,10 @@ tags: [refactor, testing]
 ---
 <metadata>
   timestamp: 2026-01-08T16:30:22Z
-  project: spx-claude
+  project: claude
   git_branch: main
   git_status: dirty
-  working_directory: /Users/dev/spx-claude
+  working_directory: /Users/dev/claude
 </metadata>
 
 <original_task>
@@ -279,8 +279,8 @@ Refactor session management to use spx session CLI
 </work_completed>
 
 <work_remaining>
-- Add archive command to spx-cli
-- Add prune command to spx-cli
+- Add archive command to spx
+- Add prune command to spx
 - Update documentation
 </work_remaining>
 

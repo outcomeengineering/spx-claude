@@ -13,14 +13,14 @@ Add this marketplace and install plugins directly from GitHub:
 
 ```bash
 # Add the marketplace
-claude plugin marketplace add simonheimlicher/spx-claude
+claude plugin marketplace add outcomeeng/claude
 
 # Install plugins you want
-claude plugin install core@spx-claude
-claude plugin install test@spx-claude
-claude plugin install typescript@spx-claude
-claude plugin install python@spx-claude
-claude plugin install spx@spx-claude
+claude plugin install core@outcomeeng
+claude plugin install test@outcomeeng
+claude plugin install typescript@outcomeeng
+claude plugin install python@outcomeeng
+claude plugin install spx@outcomeeng
 ```
 
 Now slash commands like `/commit`, `/handoff`, `/pickup` and skills like `/testing-typescript` are available in all your projects.
@@ -29,7 +29,7 @@ Now slash commands like `/commit`, `/handoff`, `/pickup` and skills like `/testi
 
 ```bash
 # Update this marketplace
-claude plugin marketplace update spx-claude
+claude plugin marketplace update outcomeeng
 
 # Or update all marketplaces
 claude plugin marketplace update
@@ -132,7 +132,7 @@ Want to create your own plugin marketplace? Fork this repo as a starting point.
 
 ```bash
 # Clone as your own marketplace
-git clone https://github.com/simonheimlicher/spx-claude.git ~/Code/my-claude-plugins
+git clone https://github.com/outcomeeng/claude.git ~/Code/my-claude-plugins
 cd ~/Code/my-claude-plugins
 
 # Remove origin and set up your own remote

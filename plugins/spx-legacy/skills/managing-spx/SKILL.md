@@ -124,20 +124,18 @@ spx/
 
 <work_item_hierarchy>
 
-- **Capability**: E2E scenario with product-wide impact
-  - Tests co-located in `spx/NN-{slug}.capability/tests/` with `.e2e.test.*` suffix
+- **Capability**: Product-wide impact, contains features
+  - Tests co-located in `spx/NN-{slug}.capability/tests/`
   - May have optional PRD as catalyst/enrichment
-  - Contains features
 
-- **Feature**: Integration scenario with specific functionality
-  - Tests co-located in `spx/.../NN-{slug}.feature/tests/` with `.integration.test.*` suffix
+- **Feature**: Specific functionality, contains stories
+  - Tests co-located in `spx/.../NN-{slug}.feature/tests/`
   - Technical details documented in feature.md (no separate TRD)
-  - Contains stories
 
-- **Story**: Unit-tested atomic implementation
-  - Tests co-located in `spx/.../NN-{slug}.story/tests/` with `.unit.test.*` suffix
-  - No children
-  - Atomic implementation unit
+- **Story**: Atomic implementation unit, no children
+  - Tests co-located in `spx/.../NN-{slug}.story/tests/`
+
+Test level (unit, integration, e2e) is determined per-component by the evidence needed, not by hierarchy level. See `/testing` for the methodology.
 
 </work_item_hierarchy>
 
@@ -717,11 +715,7 @@ Examples:
 
 <test_verification>
 
-Tests stay co-located with their specs permanently. Test level is indicated by filename suffix:
-
-- Capability tests: `spx/NN-{slug}.capability/tests/*.e2e.test.*`
-- Feature tests: `spx/.../NN-{slug}.feature/tests/*.integration.test.*`
-- Story tests: `spx/.../NN-{slug}.story/tests/*.unit.test.*`
+Tests stay co-located with their specs permanently. Test level is indicated by filename suffix (`.unit.test.*`, `.integration.test.*`, `.e2e.test.*`) but is not tied to hierarchy level — any test level can appear at any node. See `/testing` for how to determine the right level.
 
 </test_verification>
 

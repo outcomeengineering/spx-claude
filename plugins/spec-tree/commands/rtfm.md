@@ -41,7 +41,7 @@ Look at what you have produced so far:
 Invoke the coding skill NOW:
 
 ```json
-Skill tool → { "skill": "spx:coding" }
+Skill tool → { "skill": "spec-tree:coding" }
 ```
 
 This runs the full 8-phase TDD flow: methodology → context → architect → review → test → review → implement → review. Follow it from Phase 1.

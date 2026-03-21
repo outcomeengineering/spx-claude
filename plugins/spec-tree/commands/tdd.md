@@ -24,7 +24,7 @@ Invoke the coding skill to orchestrate the full spec-tree TDD flow for a work it
 Invoke the coding skill NOW:
 
 ```json
-Skill tool → { "skill": "spx:coding" }
+Skill tool → { "skill": "spec-tree:coding" }
 ```
 
 The skill contains the full 8-phase TDD flow with three review gates.

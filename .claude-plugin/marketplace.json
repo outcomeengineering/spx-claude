@@ -18,11 +18,6 @@
       "description": "Claude Code meta-skills: /creating-skills"
     },
     {
-      "name": "code",
-      "source": "./plugins/code",
-      "description": "Autonomous coding: /coding-autonomously skill"
-    },
-    {
       "name": "frontend",
       "source": "./plugins/frontend",
       "description": "Frontend design: /designing-frontend skill"
@@ -48,11 +43,6 @@
       "description": "Legacy specs/ projects: /managing-specs, /understanding-specs"
     },
     {
-      "name": "spx",
-      "source": "./plugins/spx",
-      "description": "SPX core: /committing-changes, /commit, /handoff, /pickup"
-    },
-    {
       "name": "spx-legacy",
       "source": "./plugins/spx-legacy",
       "description": "Legacy Outcome Engineering (spx/): /writing-prd, /managing-spx, /understanding-spx, /decomposing-*, migration agents"
@@ -65,7 +55,7 @@
     {
       "name": "spec-tree",
       "source": "./plugins/spec-tree",
-      "description": "Spec Tree: /understanding, /contextualizing, /authoring, /decomposing, /refactoring, /aligning, /testing"
+      "description": "Spec Tree: /understanding, /contextualizing, /authoring, /decomposing, /refactoring, /aligning, /coding, /commit, /handoff, /pickup, /rtfm, /clarify"
     }
   ]
 }

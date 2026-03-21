@@ -1,0 +1,50 @@
+name: Distribute Skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "plugins/*/skills/**"
+      - "scripts/distribution.yml"
+      - "scripts/distribute_skills.py"
+
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: "Distribute only this repo (leave empty for all)"
+        required: false
+        type: string
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Distribute skills
+        env:
+          GH_TOKEN: ${{ secrets.SKILL_DISTRIBUTION_TOKEN }}
+        run: |
+          # Configure git to use the token for HTTPS pushes
+          git config --global url."https://x-access-token:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
+
+          ARGS=""
+          if [ -n "${{ inputs.repo }}" ]; then
+            ARGS="--repo ${{ inputs.repo }}"
+          fi
+
+          python scripts/distribute_skills.py $ARGS

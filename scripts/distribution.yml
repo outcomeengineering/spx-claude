@@ -1,0 +1,47 @@
+# Skill distribution mapping
+#
+# Maps downstream repos to source plugins in this monorepo.
+# The distribute_skills.py script reads this file to determine
+# which skills to copy to each downstream repo.
+#
+# Only skills/ directories are distributed (SKILL.md + subdirectories).
+# Commands, agents, and plugin metadata are Claude-specific and stay here.
+
+github_org: outcomeeng
+
+repos:
+  foundation:
+    description: "Foundation skills: testing, prose, plugin development, frontend design"
+    plugins:
+      - test
+      - prose
+      - claude
+      - frontend
+
+  spec-tree:
+    description: "Spec Tree skills for spec-driven development"
+    prerequisites:
+      - "outcomeeng/foundation (for /testing methodology)"
+    plugins:
+      - spec-tree
+
+  typescript:
+    description: "TypeScript engineering skills"
+    prerequisites:
+      - "outcomeeng/foundation (for /testing and /reviewing-tests)"
+    plugins:
+      - typescript
+
+  python:
+    description: "Python engineering skills"
+    prerequisites:
+      - "outcomeeng/foundation (for /testing and /reviewing-tests)"
+    plugins:
+      - python
+
+  legacy:
+    description: "Deprecated Outcome Engineering skills (superseded by spec-tree)"
+    plugins:
+      - spx-legacy
+      - specs
+      - core

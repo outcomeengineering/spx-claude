@@ -273,12 +273,19 @@ def commit_and_push(repo_path: Path, message: str) -> None:
         check=True,
         capture_output=True,
     )
-    subprocess.run(
+    result = subprocess.run(
         ["git", "push", "-u", "origin", "main"],
         cwd=repo_path,
-        check=True,
         capture_output=True,
+        text=True,
     )
+    if result.returncode != 0:
+        raise subprocess.CalledProcessError(
+            result.returncode,
+            result.args,
+            output=result.stdout,
+            stderr=result.stderr,
+        )
 
 
 def distribute_repo(

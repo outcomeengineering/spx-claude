@@ -5,15 +5,16 @@ allowed-tools: Read, Grep
 ---
 
 <objective>
-Review ADRs against `/testing` principles and applicable PDR constraints. Point out violations, reference the specific principle, and show correct architecture.
+Review ADRs against `/testing` principles, atemporal voice rules, and applicable PDR constraints. Reject any ADR that narrates code history, references existing files, or describes migration plans. Point out violations, reference the specific principle, and show correct architecture.
 </objective>
 
 <quick_start>
 
 1. Read `/testing` for methodology (5 stages, 5 factors, 7 exceptions)
-2. Identify violations of testing principles and parent PDR constraints
-3. Output APPROVED or REJECTED with specific violations
-4. Show correct approach with code examples
+2. Check EVERY section for temporal language — reject any reference to current code, existing files, or migration plans
+3. Identify violations of testing principles and parent PDR constraints
+4. Output APPROVED or REJECTED with specific violations
+5. Show correct approach with code examples
 
 </quick_start>
 
@@ -55,6 +56,36 @@ From `/testing`:
 - Each use must document which exception applies
 - No exception = no doubles, test at Level 2
 
+**Atemporal voice prohibition** (Durable Map Rule):
+
+- **ADRs state architectural truth. They NEVER narrate code history, current state, or migration plans.**
+- This is a REJECTION-level violation in ANY section — Context, Decision, Rationale, Compliance, all of it. No section gets a pass.
+- An ADR that references existing code ("The current X has...", "The file X does not exist") is temporal — it becomes stale the moment that code changes.
+- Code that violates an ADR is discovered through code review and test coverage analysis against the ADR's invariants. The ADR itself never names files to delete, code to replace, or implementations to migrate away from.
+
+**Temporal patterns to reject:**
+
+- "The current `module.py` has..." — narrates code state
+- "The file `deprecated/old.py` does not exist" — narrates filesystem state
+- "We need to replace..." / "We need to migrate..." — narrates a plan, not a truth
+- "Currently X uses..." — snapshot that expires
+- "The existing implementation..." — references code, not architecture
+- "After evaluating options..." — narrates decision history
+- "X has accumulated without..." — narrates drift
+- "Previously..." / "Before this..." — there is no before
+- "Going forward..." / "In the future..." — there is only the product truth
+
+**The rewrite pattern:**
+
+- TEMPORAL: "The current MmRegs class in mm.py has a @process with bus protocol logic but uses imperative add_reg() calls and _raw()."
+- ATEMPORAL: "Register banks use declarative field definitions. Bus protocol logic belongs in the Entity's tick() method, not in standalone @process decorators."
+
+- TEMPORAL: "The file deprecated/file.py does not exist and should be removed."
+- ATEMPORAL: "Register bank implementations conform to the Entity protocol." (Non-conforming code is found by code review, not by the ADR.)
+
+- TEMPORAL: "We discovered that raw signal access causes timing violations."
+- ATEMPORAL: "Raw signal access violates the two-phase simulation model. All signal writes use non-blocking assignment."
+
 </principles_to_enforce>
 
 <output_format>
@@ -70,7 +101,7 @@ From `/testing`:
 
 ### {Violation name}
 
-**Where:** Lines {X-Y}
+**Where:** {Section name or quote identifying the location}
 **Principle violated:** /testing {section name}
 **Why this fails:** {Direct explanation}
 
@@ -121,6 +152,8 @@ From `/testing`:
 - Show correct architecture with code examples
 - Be direct about violations
 - Reference `/standardizing-python-testing` for Python-specific patterns
+- Reject temporal language in ANY section — Context, Decision, Rationale, Compliance
+- Show the atemporal rewrite alongside each temporal violation
 
 </review_guidelines>
 
@@ -174,12 +207,31 @@ class TraktListProvider(Protocol):
 
 ---
 
+### Temporal Language in Context Section
+
+**Where:** Context section
+**Principle violated:** Atemporal voice (Durable Map Rule)
+
+Context says "The current PyTrakt wrapper in trakt_client.py uses direct API calls without dependency injection, making it impossible to test at Level 1."
+
+This narrates code state — it becomes false the moment the file changes. The ADR states what the architecture IS, not what code currently exists. Non-conforming code is discovered through code review against the ADR's invariants.
+
+**Correct approach:**
+
+```markdown
+**Technical**: List operations depend on a SaaS API (Trakt.tv) that cannot
+run locally. Dependency injection isolates business logic from API transport.
+```
+
+---
+
 ## Required Changes
 
 1. Remove all Level 2 assignments for SaaS operations
 2. Remove "Mock at boundary" language
 3. Add DI protocol definitions per /standardizing-python-testing
 4. Document which exception case justifies any test doubles
+5. Rewrite Context section in atemporal voice — remove all references to current code state
 
 ---
 
@@ -200,9 +252,11 @@ Revise and resubmit.
 <success_criteria>
 Review is complete when:
 
+- [ ] Checked ALL sections for temporal language (Durable Map Rule) — Context, Decision, Rationale, Compliance
 - [ ] Checked for mocking violations (Cardinal Rule)
 - [ ] Verified level assignments match `/testing` Five Factors
 - [ ] Checked test double usage has documented exception case
+- [ ] Verified ADR never names files to delete or code to replace (code removal comes from code review, not ADRs)
 - [ ] Output follows format with section references (not line numbers)
 - [ ] Correct approach shown with code examples
 

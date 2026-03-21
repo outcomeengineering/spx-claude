@@ -5,7 +5,7 @@ allowed-tools: Read, Grep
 ---
 
 <objective>
-Review ADRs against testing principles. Point out what violates principles, reference the specific principle, and show what correct architecture looks like.
+Review ADRs against testing principles, atemporal voice rules, and applicable PDR constraints. Reject any ADR that narrates code history, references existing files, or describes migration plans. Point out violations, reference the specific principle, and show correct architecture.
 </objective>
 
 <context_loading>
@@ -35,9 +35,10 @@ If you're reviewing ADRs for a spec-driven work item (story/feature/capability),
 
 <process>
 1. **Read the ADR** completely
-2. **Identify violations** - what contradicts testing principles
-3. **Output decision** - APPROVED or REJECTED with specific violations
-4. **Show correct approach** - what the architecture should be
+2. **Check EVERY section for temporal language** — reject any reference to current code, existing files, or migration plans
+3. **Identify violations** - what contradicts testing principles
+4. **Output decision** - APPROVED or REJECTED with specific violations
+5. **Show correct approach** - what the architecture should be
 
 </process>
 
@@ -73,6 +74,36 @@ If you're reviewing ADRs for a spec-driven work item (story/feature/capability),
 - "Reality is the oracle, not mocks"
 - Tests must verify behavior against real systems at appropriate levels
 
+**Atemporal voice prohibition** (Durable Map Rule):
+
+- **ADRs state architectural truth. They NEVER narrate code history, current state, or migration plans.**
+- This is a REJECTION-level violation in ANY section — Context, Decision, Rationale, Compliance, all of it. No section gets a pass.
+- An ADR that references existing code ("The current X has...", "The file X does not exist") is temporal — it becomes stale the moment that code changes.
+- Code that violates an ADR is discovered through code review and test coverage analysis against the ADR's invariants. The ADR itself never names files to delete, code to replace, or implementations to migrate away from.
+
+**Temporal patterns to reject:**
+
+- "The current `module.ts` has..." — narrates code state
+- "The file `deprecated/old.ts` does not exist" — narrates filesystem state
+- "We need to replace..." / "We need to migrate..." — narrates a plan, not a truth
+- "Currently X uses..." — snapshot that expires
+- "The existing implementation..." — references code, not architecture
+- "After evaluating options..." — narrates decision history
+- "X has accumulated without..." — narrates drift
+- "Previously..." / "Before this..." — there is no before
+- "Going forward..." / "In the future..." — there is only the product truth
+
+**The rewrite pattern:**
+
+- TEMPORAL: "The current BuildRunner class in build.ts shells out to Hugo directly without dependency injection."
+- ATEMPORAL: "Build orchestration uses dependency injection to isolate tool invocation from build logic."
+
+- TEMPORAL: "The file legacy/builder.ts does not exist and should be removed."
+- ATEMPORAL: "Build implementations conform to the BuildDependencies interface." (Non-conforming code is found by code review, not by the ADR.)
+
+- TEMPORAL: "We discovered that direct execa calls make testing impossible."
+- ATEMPORAL: "Direct process invocation prevents Level 1 testing. Dependency injection enables isolated unit verification."
+
 </principles_to_enforce>
 
 <output_format>
@@ -88,7 +119,7 @@ If you're reviewing ADRs for a spec-driven work item (story/feature/capability),
 
 ### {Violation name}
 
-**Where:** Lines {X-Y}
+**Where:** {Section name or quote identifying the location}
 **Principle violated:** {Specific principle}
 **Why this fails:** {Direct explanation}
 
@@ -137,6 +168,8 @@ If you're reviewing ADRs for a spec-driven work item (story/feature/capability),
 - Show correct architecture (code examples)
 - Be direct about what violates principles
 - Assume the architect will understand and fix
+- Reject temporal language in ANY section — Context, Decision, Rationale, Compliance
+- Show the atemporal rewrite alongside each temporal violation
 
 </what_to_avoid>
 
@@ -192,12 +225,31 @@ All ADRs require a Testing Strategy section with level assignments.
 
 ---
 
+### Temporal Language in Context Section
+
+**Where:** Context section
+**Principle violated:** Atemporal voice (Durable Map Rule)
+
+Context says "The current BuildRunner class in build.ts shells out to Hugo directly without dependency injection, making unit testing impossible."
+
+This narrates code state — it becomes false the moment the file changes. The ADR states what the architecture IS, not what code currently exists. Non-conforming code is discovered through code review against the ADR's invariants.
+
+**Correct approach:**
+
+```markdown
+**Technical**: Build orchestration depends on external binaries (Hugo, Caddy).
+Dependency injection isolates build logic from tool invocation.
+```
+
+---
+
 ## Required Changes
 
 1. Remove "mock at boundary" language
 2. Add DI interface definitions showing how Level 1 works
 3. Add Testing Strategy section with level assignments
 4. Update escalation rationale
+5. Rewrite Context section in atemporal voice — remove all references to current code state
 
 ---
 
@@ -216,11 +268,14 @@ Revise and resubmit.
 <success_criteria>
 Review is complete when:
 
+- [ ] Checked ALL sections for temporal language (Durable Map Rule) — Context, Decision, Rationale, Compliance
 - [ ] All testing principle violations identified
 - [ ] Correct approach shown for each violation
+- [ ] Verified ADR never names files to delete or code to replace (code removal comes from code review, not ADRs)
 - [ ] Required changes listed concisely
 - [ ] Decision clearly stated (APPROVED/REJECTED)
 
 _Review with authority from expertise. Be concise and direct._
+
 </success_criteria>
 ```

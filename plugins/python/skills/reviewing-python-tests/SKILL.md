@@ -326,6 +326,20 @@ ls -d {capability_path}/*-*.feature/ 2>/dev/null
 
 **If spec contains language about missing/pending specs**: REJECT. Specs are not working documents.
 
+**Atemporal voice** (Durable Map Rule): Specs state product truth. They NEVER narrate code history, current state, or migration plans. Any temporal language is a REJECTION — no section gets a pass.
+
+**Temporal patterns to reject in specs:**
+
+- "The current `module.py` has..." — narrates code state
+- "The file `deprecated/old.py` does not exist" — narrates filesystem state
+- "We need to replace..." / "We need to migrate..." — narrates a plan, not a truth
+- "Currently X uses..." — snapshot that expires
+- "The existing implementation..." — references code, not architecture
+- "X has accumulated without..." — narrates drift
+- "Previously..." / "Before this..." — there is no before
+
+Code that doesn't conform to a spec is discovered through code review and test coverage analysis — the spec itself never names files to delete or code to replace.
+
 **4.3 Integration Test Assumptions**
 
 For integration tests (Level 2), verify they don't duplicate story-level evidence:
@@ -341,7 +355,7 @@ For integration tests (Level 2), verify they don't duplicate story-level evidenc
 **GATE 4**: Before proceeding to Phase 5, verify:
 
 - [ ] Checked for lower-level specs (stories within features, features within capabilities)
-- [ ] No "pending" or "will be added" language in spec
+- [ ] No temporal language in spec — no "pending", "will be added", "currently", "the existing", references to specific files to delete
 - [ ] Integration tests are not duplicating unit-level work
 
 If any check fails, STOP and REJECT with detailed findings.
@@ -612,21 +626,22 @@ All outcomes have genuine evidentiary coverage at appropriate levels.
 <rejection_triggers>
 Quick reference for common rejection triggers:
 
-| Category            | Trigger                                    | Verdict |
-| ------------------- | ------------------------------------------ | ------- |
-| **Spec Structure**  | Code examples in spec                      | REJECT  |
-| **Spec Structure**  | Missing or broken test file links          | REJECT  |
-| **Spec Structure**  | Language about "pending" specs             | REJECT  |
-| **Level**           | Outcome tested at wrong level              | REJECT  |
-| **Dependencies**    | `skipif` on required dependency            | REJECT  |
-| **Dependencies**    | Harness referenced but missing             | REJECT  |
-| **Property-Based**  | Parser without `@given` roundtrip test     | REJECT  |
-| **Property-Based**  | Serializer without `@given` roundtrip test | REJECT  |
-| **Property-Based**  | Math operation without property tests      | REJECT  |
-| **Decision Record** | Test violates ADR/PDR constraint           | REJECT  |
-| **Python**          | Missing `-> None` on test                  | REJECT  |
-| **Python**          | Mocking (`@patch`, `Mock()`)               | REJECT  |
-| **Evidentiary**     | Test can pass with broken impl             | REJECT  |
+| Category            | Trigger                                                          | Verdict |
+| ------------------- | ---------------------------------------------------------------- | ------- |
+| **Spec Structure**  | Code examples in spec                                            | REJECT  |
+| **Spec Structure**  | Missing or broken test file links                                | REJECT  |
+| **Spec Structure**  | Language about "pending" specs                                   | REJECT  |
+| **Spec Structure**  | Temporal language ("currently", "the existing", file references) | REJECT  |
+| **Level**           | Outcome tested at wrong level                                    | REJECT  |
+| **Dependencies**    | `skipif` on required dependency                                  | REJECT  |
+| **Dependencies**    | Harness referenced but missing                                   | REJECT  |
+| **Property-Based**  | Parser without `@given` roundtrip test                           | REJECT  |
+| **Property-Based**  | Serializer without `@given` roundtrip test                       | REJECT  |
+| **Property-Based**  | Math operation without property tests                            | REJECT  |
+| **Decision Record** | Test violates ADR/PDR constraint                                 | REJECT  |
+| **Python**          | Missing `-> None` on test                                        | REJECT  |
+| **Python**          | Mocking (`@patch`, `Mock()`)                                     | REJECT  |
+| **Evidentiary**     | Test can pass with broken impl                                   | REJECT  |
 
 </rejection_triggers>
 

@@ -2,7 +2,10 @@
 
 ## Enables
 
-Pre-commit validation infrastructure that catches invalid plugin artifacts before they enter the repository. The marketplace's existing `validate-marketplace` and `validate-plugins` hooks validate `plugin.json` manifests. This enabler extends validation to SKILL.md frontmatter, ensuring skill files conform to the fields the Claude Code CLI actually accepts.
+Pre-commit validation infrastructure that catches invalid plugin artifacts before they enter the repository. Two scripts:
+
+1. **SKILL.md frontmatter validation** (`validate-skill-frontmatter.py`) — Ensures skill files conform to the fields the Claude Code CLI accepts.
+2. **Plugin manifest validation** (`validate-plugins.py`) — Discovers and validates all marketplace and plugin manifests via `claude plugin validate`.
 
 ## Field Source
 
@@ -29,3 +32,18 @@ The Agent Skills open standard fields (`name`, `description`, `license`, `compat
 
 - ALWAYS: fall back to the Agent Skills standard fields when binary extraction fails — never fail open with an empty set, never fail closed by rejecting all fields
 - NEVER: hardcode Claude Code-specific fields — they are derived from the binary at runtime
+
+## Plugin Manifest Validation
+
+A single script that discovers and validates all marketplaces and plugins under a given root directory.
+
+### Scenarios
+
+- Given a directory containing `.claude-plugin/marketplace.json`, when validated, then `claude plugin validate` runs against it ([test](tests/test_validate_plugins_unit.py))
+- Given a directory containing `plugins/*/` with `.claude-plugin/plugin.json`, when validated, then `claude plugin validate` runs against each plugin ([test](tests/test_validate_plugins_unit.py))
+- Given a plugin that fails validation, when validated, then the script exits non-zero and reports which plugin failed ([test](tests/test_validate_plugins_unit.py))
+- Given no marketplace or plugins found, when validated, then the script exits non-zero with an error ([test](tests/test_validate_plugins_unit.py))
+
+### Scenarios (continued)
+
+- Given the same directory, when discovery runs twice, then the same set of targets is returned both times ([test](tests/test_validate_plugins_unit.py))

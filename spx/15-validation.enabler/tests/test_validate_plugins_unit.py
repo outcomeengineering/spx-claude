@@ -1,0 +1,137 @@
+"""Unit tests for plugin manifest validation.
+
+Tests the validate-plugins.py script against the assertions
+in spx/15-validation.enabler/validation.md (Plugin Manifest Validation).
+
+Stage 1 evidence: the script correctly discovers marketplace roots and plugin
+directories, reports failures, and exits non-zero on errors.
+
+Stage 2 decision: Level 1 for discovery logic (pure path computation).
+Subprocess execution of `claude plugin validate` is thin glue tested at
+Level 2 by the pre-commit hook itself.
+
+Stage 3B: discovery is extracted as a pure function from execution.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import subprocess
+from pathlib import Path
+from unittest.mock import patch
+
+import pytest
+
+# Load the script as a module.
+_script = Path(__file__).resolve().parents[3] / "scripts" / "validate-plugins.py"
+_spec = importlib.util.spec_from_file_location("validate_plugins", _script)
+assert _spec is not None and _spec.loader is not None
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+
+discover_targets = _mod.discover_targets
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+
+def _make_marketplace(tmp_path: Path) -> Path:
+    """Create a directory with .claude-plugin/marketplace.json."""
+    manifest_dir = tmp_path / ".claude-plugin"
+    manifest_dir.mkdir()
+    (manifest_dir / "marketplace.json").write_text('{"plugins": []}')
+    return tmp_path
+
+
+def _make_plugin(tmp_path: Path, name: str) -> Path:
+    """Create a plugin directory under tmp_path/plugins/<name>/."""
+    plugin_dir = tmp_path / "plugins" / name
+    manifest_dir = plugin_dir / ".claude-plugin"
+    manifest_dir.mkdir(parents=True)
+    (manifest_dir / "plugin.json").write_text(
+        f'{{"name": "{name}", "version": "0.1.0"}}'
+    )
+    return plugin_dir
+
+
+# ---------------------------------------------------------------------------
+# Scenario: marketplace discovered and validated
+# ---------------------------------------------------------------------------
+
+
+def test_discovers_marketplace(tmp_path: Path) -> None:
+    _make_marketplace(tmp_path)
+    targets = discover_targets(tmp_path)
+    assert tmp_path in targets
+
+
+# ---------------------------------------------------------------------------
+# Scenario: plugin directories discovered and validated
+# ---------------------------------------------------------------------------
+
+
+def test_discovers_plugins(tmp_path: Path) -> None:
+    _make_marketplace(tmp_path)
+    plugin_a = _make_plugin(tmp_path, "alpha")
+    plugin_b = _make_plugin(tmp_path, "beta")
+    targets = discover_targets(tmp_path)
+    assert plugin_a in targets
+    assert plugin_b in targets
+
+
+# ---------------------------------------------------------------------------
+# Scenario: failed validation exits non-zero and reports which plugin failed
+# ---------------------------------------------------------------------------
+
+
+def test_failed_validation_exits_nonzero_and_reports(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    _make_marketplace(tmp_path)
+    _make_plugin(tmp_path, "bad-plugin")
+
+    def fake_run(cmd: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        target = cmd[-1]
+        if "bad-plugin" in target:
+            return subprocess.CompletedProcess(
+                cmd, returncode=1, stdout="", stderr="validation failed"
+            )
+        return subprocess.CompletedProcess(cmd, returncode=0, stdout="ok", stderr="")
+
+    with patch.object(_mod, "run_validate", fake_run):
+        exit_code = _mod.main([str(tmp_path)])
+
+    assert exit_code != 0
+    captured = capsys.readouterr()
+    assert "bad-plugin" in captured.err
+
+
+# ---------------------------------------------------------------------------
+# Scenario: no marketplace or plugins found exits non-zero
+# ---------------------------------------------------------------------------
+
+
+def test_no_targets_exits_nonzero(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    exit_code = _mod.main([str(tmp_path)])
+    assert exit_code != 0
+    captured = capsys.readouterr()
+    assert captured.err  # some error message printed
+
+
+# ---------------------------------------------------------------------------
+# Property: discovery is deterministic
+# ---------------------------------------------------------------------------
+
+
+def test_discovery_deterministic(tmp_path: Path) -> None:
+    _make_marketplace(tmp_path)
+    _make_plugin(tmp_path, "one")
+    _make_plugin(tmp_path, "two")
+    _make_plugin(tmp_path, "three")
+    a = discover_targets(tmp_path)
+    b = discover_targets(tmp_path)
+    assert a == b

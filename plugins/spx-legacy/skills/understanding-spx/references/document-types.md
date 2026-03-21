@@ -1,10 +1,10 @@
-# Document Types and Requirements
-
+<overview>
 Complete reference of all document types in the Outcome Engineering framework hierarchy and their requirements.
+</overview>
 
-## Work Item Hierarchy
+<work_item_hierarchy>
 
-```
+```text
 Product
 └── Capability (E2E level)
     ├── {slug}.capability.md     REQUIRED
@@ -22,9 +22,11 @@ Product
             └── tests/           OPTIONAL (co-located tests)
 ```
 
-## Document Types
+</work_item_hierarchy>
 
-### Product-Level Documents
+<document_types>
+
+<product_level>
 
 **Location**: `spx/`
 
@@ -35,7 +37,9 @@ Product
 | Product PDRs  | `NN-{slug}.pdr.md`      | NO        | Product-wide product decisions       |
 | Product PRD   | `{product-name}.prd.md` | NO        | Optional product-wide requirements   |
 
-### Capability-Level Documents
+</product_level>
+
+<capability_level>
 
 **Location**: `spx/NN-{slug}.capability/`
 
@@ -49,7 +53,9 @@ Product
 
 **Note**: PRD is optional enrichment. If PRD exists but spec is missing, offer to create spec from PRD.
 
-### Feature-Level Documents
+</capability_level>
+
+<feature_level>
 
 **Location**: `spx/NN-{slug}.capability/NN-{slug}.feature/`
 
@@ -62,7 +68,9 @@ Product
 
 **Note**: Technical details belong in feature.md, not separate TRD documents.
 
-### Story-Level Documents
+</feature_level>
+
+<story_level>
 
 **Location**: `spx/.../NN-{slug}.story/`
 
@@ -73,9 +81,15 @@ Product
 
 **Note**: Stories do NOT have their own ADRs or PDRs. They inherit decisions from parent feature/capability.
 
-## Document Content Requirements
+</story_level>
 
-### Specification Files (.capability.md, .feature.md, .story.md)
+</document_types>
+
+<document_content_requirements>
+
+<spec_files>
+
+**Applies to**: `.capability.md`, `.feature.md`, `.story.md`
 
 **Must contain** (contract — references must resolve):
 
@@ -89,7 +103,9 @@ Product
 - **Architectural Constraints**: References to applicable ADRs and PDRs (contract)
 - **Analysis** (stories only): Files, constants, config examined (context — implementation may diverge)
 
-### Requirements Documents (PRD)
+</spec_files>
+
+<prd_content>
 
 **PRD (Product Requirements Document)**:
 
@@ -98,43 +114,53 @@ Product
 - Measurable outcomes (X% improvement targets)
 - Acceptance tests (BDD scenarios)
 
-### Architectural Decision Records (ADR)
+</prd_content>
 
-**Must contain**:
+<adr_content>
+
+**Architectural Decision Records** must contain:
 
 - **Purpose**: What architectural concern this decision governs (atemporal — state as permanent truth)
 - **Decision**: What is being decided
 - **Consequences**: Trade-offs and implications
 - **Compliance**: How adherence will be verified (code review criteria)
 
-### Product Decision Records (PDR)
+</adr_content>
 
-**Must contain**:
+<pdr_content>
+
+**Product Decision Records** must contain:
 
 - **Purpose**: What product behavior this decision governs (atemporal — state as permanent truth)
 - **Decision**: What product behavior is being decided
 - **Product Invariants**: Observable behaviors users can rely on
 - **Compliance**: How adherence will be verified (product behavior validation)
 
-**ADR vs PDR**:
+</pdr_content>
+
+<adr_vs_pdr>
 
 - **ADR**: Governs code architecture (HOW to build)
 - **PDR**: Governs product behavior (WHAT users experience)
 
-## PRD as Optional Enrichment
+</adr_vs_pdr>
 
+</document_content_requirements>
+
+<prd_as_optional_enrichment>
 PRD documents are **optional** at all levels. The spec file (`.capability.md`, `.feature.md`, `.story.md`) is the only required document for each work item.
 
 **When PRD exists without spec file:**
 
 If a PRD exists at a level but the corresponding spec file is missing, offer to create the spec from the requirements document. This handles cases where work was initiated from a requirements document but the spec wasn't yet created.
 
-## Status Determination
+</prd_as_optional_enrichment>
 
+<status_determination>
 Status is derived from whether tests pass, not from directory location or spec content.
+</status_determination>
 
-## Test Co-location (Outcome Engineering Framework)
-
+<test_colocation>
 Tests are co-located with their specs in `spx/.../tests/`.
 
 | Level      | Location                           | Test Suffix             |
@@ -143,8 +169,9 @@ Tests are co-located with their specs in `spx/.../tests/`.
 | Feature    | `spx/.../NN-{slug}.feature/tests/` | `*.integration.test.ts` |
 | Story      | `spx/.../NN-{slug}.story/tests/`   | `*.unit.test.ts`        |
 
-## BSP Numbering
+</test_colocation>
 
+<bsp_numbering>
 **Binary Space Partitioning (BSP)** encodes dependency order: lower BSP items are dependencies that higher-BSP items may rely on; same BSP means independent. Two-digit numbers (10-99) with `-` separator.
 
 **Rules**:
@@ -159,3 +186,5 @@ Tests are co-located with their specs in `spx/.../tests/`.
 
 - `20-advanced-features.capability/` may depend on `10-core-cli.capability/`
 - `40-test.story/` may depend on `30-build.story/`
+
+</bsp_numbering>

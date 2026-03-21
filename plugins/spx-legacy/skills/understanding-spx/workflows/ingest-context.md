@@ -9,7 +9,7 @@ Read these reference files NOW:
 <process>
 Execute these phases IN ORDER. ABORT immediately if any required document is missing.
 
-## Phase 0: Locate Work Item
+<phase_0_locate>
 
 **Goal**: Find exact path to work item in `spx/`
 
@@ -36,7 +36,7 @@ Glob: "spx/**/*-{slug}.capability/"
 
 **Output**:
 
-```
+```text
 Work Item Located
   Path: spx/10-cli.capability/20-commands.feature/30-build.story
   Level: STORY
@@ -44,9 +44,9 @@ Work Item Located
   Slug: build
 ```
 
----
+</phase_0_locate>
 
-## Phase 1: Product-Wide Context
+<phase_1_product>
 
 **Goal**: Load product-wide constraints and guidance
 
@@ -68,26 +68,30 @@ Glob: "spx/*-*.pdr.md"
 Read: [decision record path]
 ```
 
+**⚠️ Read EVERY file returned by the globs above. Do not skip any based on perceived relevance. Decision records contain cross-cutting constraints that may not be obvious from the title. If the glob returns 15 files, you read 15 files — no exceptions.**
+
+**Verification**: Count the files returned by the globs. Count the files you actually read. These numbers must match. If they don't, go back and read the ones you skipped.
+
 **Abort if**: `spx/CLAUDE.md` missing
 
 **Strict Mode Check**: None (product ADRs/PDRs are truly optional)
 
 **Output**:
 
-```
+```text
 Product Context Loaded
   - spx/CLAUDE.md
-  - Product ADRs: 3
+  - Product ADRs: 3 found, 3 read ✓
     - [Type Safety](21-type-safety.adr.md)
     - [Testing Strategy](37-testing-strategy.adr.md)
     - [CLI Framework](54-cli-framework.adr.md)
-  - Product PDRs: 1
+  - Product PDRs: 1 found, 1 read ✓
     - [Simulation Lifecycle](10-simulation-lifecycle.pdr.md)
 ```
 
----
+</phase_1_product>
 
-## Phase 2: Capability Context
+<phase_2_capability>
 
 **Goal**: Load capability specification, requirements, and decisions
 
@@ -120,6 +124,10 @@ Glob: "{capability-path}/*-*.pdr.md"
 Read: [decision record path]
 ```
 
+**⚠️ Read EVERY ADR and PDR returned by the globs. Do not filter by perceived relevance — constraints are cross-cutting and titles are not reliable indicators of applicability.**
+
+**Verification**: Glob count must equal read count. If not, go back.
+
 **Abort if**:
 
 - Capability spec missing (but PRD exists -> offer to create spec from PRD)
@@ -139,11 +147,11 @@ ls -d {capability-path}/*.feature/ 2>/dev/null || echo "No features found"
 
 **Output**:
 
-```
+```text
 Capability Context Loaded: 10-cli.capability
   - cli.capability.md
   - command-architecture.prd.md (optional, found)
-  - Capability ADRs: 2
+  - Capability ADRs: 2 found, 2 read ✓
     - [Commander Pattern](21-commander-pattern.adr.md)
     - [Config Loading](37-config-loading.adr.md)
   - Capability PDRs: 0
@@ -152,9 +160,9 @@ Capability Context Loaded: 10-cli.capability
     - 37-plugins.feature/
 ```
 
----
+</phase_2_capability>
 
-## Phase 3: Feature Context
+<phase_3_feature>
 
 **Goal**: Load feature specification and decisions
 
@@ -181,6 +189,10 @@ Glob: "{feature-path}/*-*.pdr.md"
 Read: [decision record path]
 ```
 
+**⚠️ Read EVERY ADR and PDR returned by the globs. Do not filter by perceived relevance.**
+
+**Verification**: Glob count must equal read count. If not, go back.
+
 **Abort if**:
 
 - Feature spec missing
@@ -203,10 +215,10 @@ find {feature-path} -maxdepth 1 -type d -name "*.story"
 
 **Output**:
 
-```
+```text
 Feature Context Loaded: 20-commands.feature
   - commands.feature.md
-  - Feature ADRs: 1
+  - Feature ADRs: 1 found, 1 read ✓
     - [Subcommand Structure](21-subcommand-structure.adr.md)
   - Feature PDRs: 0
   - Stories: 3
@@ -215,9 +227,9 @@ Feature Context Loaded: 20-commands.feature
     - 54-output-format.story/
 ```
 
----
+</phase_3_feature>
 
-## Phase 4: Story Context
+<phase_4_story>
 
 **Goal**: Load story specification
 
@@ -246,21 +258,21 @@ Read: {story-path}/{slug}.story.md
 
 **Output**:
 
-```
+```text
 Story Context Loaded: 30-build.story
   - build.story.md
   - tests/ directory: exists
 ```
 
----
+</phase_4_story>
 
-## Phase 5: Context Summary
+<phase_5_summary>
 
 **Goal**: Confirm complete context loaded and provide actionable summary
 
-**Generate**:
+**Generate the following summary** (adapt counts and paths to actual project):
 
-```markdown
+````markdown
 # CONTEXT INGESTION COMPLETE
 
 ## Work Item
@@ -274,18 +286,18 @@ Story Context Loaded: 30-build.story
 ### Product Level
 
 - **Guide**: spx/CLAUDE.md
-- **ADRs**: 3 documents
+- **ADRs**: 3 found, 3 read ✓
   - [Type Safety](21-type-safety.adr.md)
   - [Testing Strategy](37-testing-strategy.adr.md)
   - [CLI Framework](54-cli-framework.adr.md)
-- **PDRs**: 1 document
+- **PDRs**: 1 found, 1 read ✓
   - [Simulation Lifecycle](10-simulation-lifecycle.pdr.md)
 
 ### Capability Level: cli
 
 - **Spec**: 10-cli.capability/cli.capability.md
 - **PRD**: 10-cli.capability/command-architecture.prd.md
-- **ADRs**: 2 documents
+- **ADRs**: 2 found, 2 read ✓
   - [Commander Pattern](21-commander-pattern.adr.md)
   - [Config Loading](37-config-loading.adr.md)
 - **PDRs**: 0 documents
@@ -293,7 +305,7 @@ Story Context Loaded: 30-build.story
 ### Feature Level: commands
 
 - **Spec**: 20-commands.feature/commands.feature.md
-- **ADRs**: 1 document
+- **ADRs**: 1 found, 1 read ✓
   - [Subcommand Structure](21-subcommand-structure.adr.md)
 - **PDRs**: 0 documents
 
@@ -321,24 +333,43 @@ Story Context Loaded: 30-build.story
 **Test Location**: `spx/.../30-build.story/tests/`
 
 ## Hierarchy Chain
-```
 
+```text
 Product (claude)
 └── Capability 10: cli
-└── Feature 20: commands
-└── Story 30: build ← YOU ARE HERE
-
+    └── Feature 20: commands
+        └── Story 30: build ← YOU ARE HERE
 ```
+
 ## Ready for Implementation
 
-All required documents verified and read
-Complete hierarchical context loaded
-All architectural constraints (ADRs) and product decisions (PDRs) understood
+All required documents verified and read.
+Complete hierarchical context loaded.
+All architectural constraints (ADRs) and product decisions (PDRs) understood.
 
 You may now proceed with implementation.
-```
+````
+
+</phase_5_summary>
 
 </process>
+
+<failure_modes>
+Failures from actual usage:
+
+**Failure 1: Agent skipped most ADRs/PDRs based on title relevance**
+
+- What happened: Agent globbed 17 product-level PDRs and ADRs but only read 2 whose titles seemed relevant to the immediate question, skipping 15 documents
+- Why it failed: Agent optimized for efficiency over completeness — the pseudo-code comment `# For each decision record found:` inside a code fence didn't carry imperative weight
+- How to avoid: The verification gates ("glob count must equal read count") enforce exhaustive reading. The answer to the user's question was in one of the 15 skipped documents.
+
+**Failure 2: Agent treated "For each" loop as illustrative, not mandatory**
+
+- What happened: The instruction to read each file was a comment inside a bash code block. Agent interpreted it as an example pattern rather than a strict directive.
+- Why it failed: Comments inside code fences are read as documentation, not commands. Agents distinguish between "here's how you could do it" and "you MUST do this."
+- How to avoid: Critical instructions must appear as bold text OUTSIDE code fences, not as comments inside them.
+
+</failure_modes>
 
 <success_criteria>
 Workflow is complete when:
@@ -346,6 +377,7 @@ Workflow is complete when:
 - [ ] All phases executed in order (0 through 5)
 - [ ] Every required document located and read
 - [ ] All ADRs and PDRs at all levels read and listed
+- [ ] Glob count matches read count at every level (verify: output shows "N found, N read ✓")
 - [ ] Context summary generated with complete document list
 - [ ] Clear indication that implementation may proceed
 - [ ] No ABORT conditions triggered (or appropriate error shown)

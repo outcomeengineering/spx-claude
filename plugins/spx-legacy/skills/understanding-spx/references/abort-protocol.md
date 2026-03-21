@@ -1,9 +1,8 @@
-# Abort Protocol
-
+<overview>
 Error handling and remediation guidance when required documents are missing.
+</overview>
 
-## When to Abort
-
+<when_to_abort>
 ABORT immediately when ANY of these conditions are met:
 
 1. **Work item not found**: Cannot locate work item in `spx/`
@@ -13,7 +12,9 @@ ABORT immediately when ANY of these conditions are met:
 
 **Note**: PRD is optional. Missing PRD does NOT trigger abort.
 
-## Abort Message Format
+</when_to_abort>
+
+<abort_message_format>
 
 ```markdown
 CONTEXT INGESTION FAILED
@@ -29,9 +30,11 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until this document exists.**
 ```
 
-## Abort Scenarios
+</abort_message_format>
 
-### 1. Work Item Not Found
+<abort_scenarios>
+
+<scenario name="work_item_not_found">
 
 **Trigger**: Phase 0 - Cannot locate work item
 
@@ -53,7 +56,9 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until work item exists.**
 ```
 
-### 2. Product Guide Missing
+</scenario>
+
+<scenario name="product_guide_missing">
 
 **Trigger**: Phase 1 - `spx/CLAUDE.md` not found
 
@@ -74,7 +79,9 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until product guide exists.**
 ```
 
-### 3. Capability Spec Missing
+</scenario>
+
+<scenario name="capability_spec_missing">
 
 **Trigger**: Phase 2 - Capability spec file not found
 
@@ -96,7 +103,9 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until capability spec exists.**
 ```
 
-### 4. Capability Spec Missing (with PRD available)
+</scenario>
+
+<scenario name="capability_spec_missing_with_prd">
 
 **Trigger**: Phase 2 - Capability spec not found BUT PRD exists
 
@@ -124,7 +133,9 @@ If user declines:
 1. ABORT - cannot proceed without spec file
 ```
 
-### 5. Feature Spec Missing
+</scenario>
+
+<scenario name="feature_spec_missing">
 
 **Trigger**: Phase 3 - Feature spec file not found
 
@@ -146,7 +157,9 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until feature spec exists.**
 ```
 
-### 6. Story Spec Missing
+</scenario>
+
+<scenario name="story_spec_missing">
 
 **Trigger**: Phase 4 - Story spec file not found
 
@@ -168,7 +181,9 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until story spec exists.**
 ```
 
-### 7. Multiple Spec Files Found (Ambiguous)
+</scenario>
+
+<scenario name="multiple_specs_found">
 
 **Trigger**: Any phase - Multiple spec files at same level
 
@@ -193,11 +208,14 @@ CONTEXT INGESTION FAILED
 **Cannot proceed with implementation until ambiguity is resolved.**
 ```
 
-## Warning Scenarios (Don't Abort)
+</scenario>
 
+</abort_scenarios>
+
+<warning_scenarios>
 These scenarios generate warnings but don't abort:
 
-### Working on Completed Work Item
+<scenario name="working_on_completed_item">
 
 ```markdown
 WARNING: Working on completed work item
@@ -215,9 +233,11 @@ WARNING: Working on completed work item
 Proceeding with context ingestion...
 ```
 
-### No Product ADRs/PDRs
+</scenario>
 
-```markdown
+<scenario name="no_product_decisions">
+
+```text
 Product Context Loaded
 
 - spx/CLAUDE.md
@@ -225,9 +245,11 @@ Product Context Loaded
 - Product PDRs: 0 (none found - acceptable for new projects)
 ```
 
-### No Capability/Feature ADRs/PDRs
+</scenario>
 
-```markdown
+<scenario name="no_capability_decisions">
+
+```text
 Capability Context Loaded: 10-cli.capability
 
 - cli.capability.md
@@ -236,8 +258,11 @@ Capability Context Loaded: 10-cli.capability
 - Capability PDRs: 0 (none found - acceptable)
 ```
 
-## Success Path (No Errors)
+</scenario>
 
+</warning_scenarios>
+
+<success_path>
 When all documents exist:
 
 ```markdown
@@ -250,8 +275,9 @@ All architectural constraints understood
 You may now proceed with implementation.
 ```
 
-## PRD Handling
+</success_path>
 
+<prd_handling>
 **PRD is an optional enrichment document.**
 
 - Missing PRD does NOT cause abort
@@ -264,3 +290,5 @@ You may now proceed with implementation.
 2. Prompt user: "Found PRD but no [spec].md - create spec from it?"
 3. If accepted: Create spec using template and requirements document
 4. If declined: Abort with spec missing error
+
+</prd_handling>

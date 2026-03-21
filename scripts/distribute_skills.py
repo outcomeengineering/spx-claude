@@ -235,11 +235,22 @@ def clear_repo_contents(repo_path: Path) -> None:
             item.unlink()
 
 
+def _ignore_broken_symlinks(directory: str, contents: list[str]) -> set[str]:
+    """Ignore broken symlinks during copytree."""
+    ignored = set()
+    for item in contents:
+        path = Path(directory) / item
+        if path.is_symlink() and not path.resolve().exists():
+            print(f"    Skipping broken symlink: {path}")
+            ignored.add(item)
+    return ignored
+
+
 def copy_skill(skill: dict, dest_dir: Path) -> None:
-    """Copy a skill directory to the destination."""
+    """Copy a skill directory to the destination, skipping broken symlinks."""
     source = skill["source"]
     target = dest_dir / skill["dir_name"]
-    shutil.copytree(source, target, dirs_exist_ok=True)
+    shutil.copytree(source, target, dirs_exist_ok=True, ignore=_ignore_broken_symlinks)
 
 
 def has_changes(repo_path: Path) -> bool:

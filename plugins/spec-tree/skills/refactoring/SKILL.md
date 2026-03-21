@@ -10,6 +10,6 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 <objective>
 
-Apply structural changes to the Spec Tree: move nodes between parents, re-scope content across nodes, extract shared enablers from repeated patterns, and consolidate related nodes. Re-locks affected nodes after changes.
+Apply structural changes to the Spec Tree: move nodes between parents, re-scope content across nodes, extract shared enablers from repeated patterns, and consolidate related nodes.
 
 </objective>

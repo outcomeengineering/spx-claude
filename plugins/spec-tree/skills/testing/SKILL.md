@@ -1,8 +1,8 @@
 ---
 name: testing
 description: |
-  Manage Spec Tree lock file lifecycle: create tests from assertions, run tests, write lock files.
-  Use when locking nodes, checking stale status, or synchronizing spec-test consistency after changes.
+  Manage Spec Tree testing: create tests from assertions, run tests, check stale status.
+  Use when creating tests, running tests, or synchronizing spec-test consistency after changes.
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 
@@ -10,11 +10,11 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 <objective>
 
-Manage the lock file lifecycle for Spec Tree nodes. Creates tests from assertion links in specs, invokes language-specific testing skills, runs tests, and writes `spx-lock.yaml` when all pass. Detects stale nodes and flags outcomes lacking evidence.
+Create tests from assertion links in specs, invoke language-specific testing skills, run tests, and detect stale nodes lacking evidence.
 
 Operates in two modes:
 
-- **Direct invocation:** User asks to lock nodes or create tests.
+- **Direct invocation:** User asks to create or run tests.
 - **Postflight:** Action skills trigger after making changes to synchronize spec-test consistency.
 
 </objective>

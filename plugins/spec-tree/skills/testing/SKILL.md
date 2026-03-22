@@ -3,6 +3,7 @@ name: testing
 description: >-
   ALWAYS invoke this skill before writing tests or when learning the testing approach.
   NEVER write tests without this skill.
+allowed-tools: Read, Glob, Grep, Write, Edit
 ---
 
 <objective>
@@ -22,7 +23,9 @@ Then follow the spec-tree workflow below.
 
 <spec_tree_workflow>
 
-## Step 1: Load tree context
+<step name="load_context">
+
+**Step 1: Load tree context**
 
 Check for `<SPEC_TREE_FOUNDATION>` and `<SPEC_TREE_CONTEXT>` markers. If absent, invoke `/understanding` and `/contextualizing` first.
 
@@ -32,7 +35,11 @@ This loads:
 - Ancestor ADRs/PDRs that constrain the testing approach
 - Lower-index sibling specs that provide context
 
-## Step 2: Extract assertions from the spec
+</step>
+
+<step name="extract_assertions">
+
+**Step 2: Extract assertions from the spec**
 
 Parse the target spec node. Extract all typed assertions and their test links:
 
@@ -51,7 +58,11 @@ Record each assertion with:
 - Test link (if present) — path and whether it resolves
 - Test link status: exists / missing / stale
 
-## Step 3: Analyze evidence gaps
+</step>
+
+<step name="analyze_gaps">
+
+**Step 3: Analyze evidence gaps**
 
 For each assertion:
 
@@ -64,7 +75,11 @@ For each assertion:
 
 Report the evidence gap summary before proceeding.
 
-## Step 4: Route each assertion through the methodology
+</step>
+
+<step name="route_methodology">
+
+**Step 4: Route each assertion through the methodology**
 
 For each assertion that needs a test, apply the 5-stage router from `${SKILL_DIR}/references/methodology.md`:
 
@@ -74,7 +89,11 @@ For each assertion that needs a test, apply the 5-stage router from `${SKILL_DIR
 
 Document the routing decision for each assertion.
 
-## Step 5: Generate test scaffolds
+</step>
+
+<step name="generate_scaffolds">
+
+**Step 5: Generate test scaffolds**
 
 For each assertion needing a new test:
 
@@ -86,22 +105,30 @@ For each assertion needing a new test:
 
 Delegate language-specific patterns to `/testing-python` or `/testing-typescript`.
 
-## Step 6: Update spec assertion links
+</step>
+
+<step name="update_links">
+
+**Step 6: Update spec assertion links**
 
 After creating test files, update the spec to add `([test](tests/{filename}))` links for each new assertion-test pair. Every assertion must link to at least one test file.
 
-## Step 7: Report evidence summary
+</step>
+
+<step name="report">
+
+**Step 7: Report evidence summary**
 
 Report which assertions have tests, which don't, which are stale:
 
 ```markdown
-## Evidence Summary: {node_path}
-
 | # | Assertion | Type     | Level | Test File | Status  |
 | - | --------- | -------- | ----- | --------- | ------- |
 | 1 | {text}    | Scenario | 1     | {file}    | Covered |
 | 2 | {text}    | Property | 1     | —         | Missing |
 ```
+
+</step>
 
 </spec_tree_workflow>
 

@@ -16,14 +16,14 @@ Author Spec Tree artifacts — product specs, decision records (ADR/PDR), enable
 
 **PREREQUISITE**: Check for `<SPEC_TREE_FOUNDATION>` marker. If absent, invoke `/understanding` first.
 
-Templates and examples live in the `understanding` skill's directory:
+Templates and examples live in the understanding skill's directory (`${SKILL_DIR}/../understanding/`):
 
-- `understanding` skill → `templates/product/product-name.product.md`
-- `understanding` skill → `templates/decisions/decision-name.adr.md`
-- `understanding` skill → `templates/decisions/decision-name.pdr.md`
-- `understanding` skill → `templates/nodes/enabler-name.md`
-- `understanding` skill → `templates/nodes/outcome-name.md`
-- `understanding` skill → `examples/` — filled specs for reference
+- `${SKILL_DIR}/../understanding/templates/product/product-name.product.md`
+- `${SKILL_DIR}/../understanding/templates/decisions/decision-name.adr.md`
+- `${SKILL_DIR}/../understanding/templates/decisions/decision-name.pdr.md`
+- `${SKILL_DIR}/../understanding/templates/nodes/enabler-name.md`
+- `${SKILL_DIR}/../understanding/templates/nodes/outcome-name.md`
+- `${SKILL_DIR}/../understanding/examples/` — filled specs for reference
 
 Read the appropriate template before drafting.
 
@@ -45,7 +45,7 @@ Ask or infer from context:
 | **Enabler node** | Shared infrastructure for 2+ siblings | `templates/nodes/enabler-name.md`           |
 | **Outcome node** | User-facing behavior with hypothesis  | `templates/nodes/outcome-name.md`           |
 
-If unclear which type, apply the decision table from `understanding` → `references/node-types.md`:
+If unclear which type, apply the decision table from `${SKILL_DIR}/../understanding/references/node-types.md`:
 
 - Delivers user-facing value? → Outcome
 - Exists only to serve other nodes? → Enabler
@@ -76,7 +76,7 @@ This loads:
 
 **For product specs:** Place at `spx/{product-name}.product.md`. No index.
 
-**For ADRs/PDRs:** Place in the directory where the decision's scope applies. Assign an index using the ordering rules from `understanding` → `references/ordering-rules.md`:
+**For ADRs/PDRs:** Place in the directory where the decision's scope applies. Assign an index using the ordering rules from `${SKILL_DIR}/../understanding/references/ordering-rules.md`:
 
 - The index encodes dependency: lower constrains higher
 - An ADR/PDR at index N constrains all siblings at N+1 and above
@@ -143,15 +143,15 @@ Use `AskUserQuestion` for genuine gaps. Do not ask about information already pro
 
 **Step 5: Draft the artifact**
 
-Read the appropriate template from the `understanding` skill. Fill it using the gathered content.
+Read the appropriate template from `${SKILL_DIR}/../understanding/templates/`. Fill it using the gathered content.
 
-**Voice rules** (from `understanding` → `references/durable-map.md`):
+**Voice rules** (from `${SKILL_DIR}/../understanding/references/durable-map.md`):
 
 - **Atemporal**: State product truth. Never narrate history ("we discovered", "currently", "after investigating").
 - **Permanent**: Write as if this will be true forever. If it wouldn't, it's temporal.
 - **Test**: Read any sentence aloud. If it would sound wrong after the work is done, rewrite it.
 
-**Assertion rules** (from `understanding` → `references/assertion-types.md`):
+**Assertion rules** (from `${SKILL_DIR}/../understanding/references/assertion-types.md`):
 
 - Every outcome must have at least one assertion
 - Each assertion must link to a test file: `([test](tests/{slug}.{level}.test.{ext}))`
@@ -178,7 +178,7 @@ Before writing files, check:
 - [ ] All assertions have test links (even if test files don't exist yet)
 - [ ] Assertion types match test strategy
 - [ ] ADR/PDR compliance rules use MUST/NEVER format with `([review])` tags
-- [ ] No content misplacement (per `understanding` → `references/what-goes-where.md`)
+- [ ] No content misplacement (per `${SKILL_DIR}/../understanding/references/what-goes-where.md`)
 
 </step>
 
@@ -239,6 +239,47 @@ Recommend next steps based on artifact type:
 </step>
 
 </workflow>
+
+<failure_modes>
+
+**Failure 1: Temporal language survived into the spec**
+
+Agent drafted an outcome spec from the user's description: "Users currently can't export data, so we need to add CSV export." The spec read: "The system currently lacks export functionality. CSV export addresses this gap." Both sentences are temporal — they narrate a problem being solved rather than stating product truth. The atemporal version: "The system exports query results as CSV files."
+
+How to avoid: After drafting, apply the read-aloud test from `durable-map.md` to every sentence. If it would sound wrong after the feature ships, rewrite it.
+
+**Failure 2: Assertions placed in ADRs**
+
+Agent wrote an ADR that included: "Given a user uploads a file larger than 10MB, the system rejects it with a 413 error." This is a scenario assertion — it belongs in a spec, not in an ADR. The ADR should state the compliance rule: "ALWAYS: Uploaded files exceeding 10MB are rejected at the gateway. ([review])"
+
+How to avoid: ADRs govern with MUST/NEVER compliance rules verified by review. If you're writing Given/When/Then, you're writing a spec assertion, not a decision record.
+
+**Failure 3: Wrong template used for node type**
+
+Agent created an enabler node using the outcome template. The spec had a three-part hypothesis (output → outcome → impact) but the node existed only to provide shared infrastructure for two siblings. The hypothesis was forced — "We believe that providing a database schema will cause developers to write queries faster" — because the node wasn't delivering user-facing value.
+
+How to avoid: Apply the decision table from `node-types.md` before selecting a template. If you can't write a natural hypothesis, it's probably an enabler.
+
+**Failure 4: Index collision with existing sibling**
+
+Agent created a new outcome at index 32 without checking existing siblings. Another node already occupied index 32. The directory was created but overwrote the existing node's path.
+
+How to avoid: Always invoke `/contextualizing` for the parent directory before creating any node. The sibling enumeration in the context manifest reveals all occupied indices.
+
+**Failure 5: Rewrite pattern for temporal language**
+
+Common temporal patterns from user input and their atemporal rewrites:
+
+- TEMPORAL: "We need to support OAuth because users can't log in with SSO."
+- ATEMPORAL: "Authentication uses OAuth 2.0. Users authenticate via SSO providers."
+
+- TEMPORAL: "The API currently returns XML but we're switching to JSON."
+- ATEMPORAL: "The API returns JSON responses conforming to the schema in ADR-15."
+
+- TEMPORAL: "After investigating performance issues, we decided to add caching."
+- ATEMPORAL: "Response caching reduces latency for repeated queries. Cache invalidation follows the policy in ADR-22."
+
+</failure_modes>
 
 <anti_patterns>
 

@@ -3,6 +3,7 @@ name: reviewing-tests
 description: >-
   ALWAYS invoke this skill when reviewing tests for evidentiary value and spec compliance.
   NEVER review tests without this skill.
+allowed-tools: Read, Glob, Grep
 ---
 
 <objective>
@@ -22,7 +23,9 @@ Then follow the spec-tree review workflow below. Language-specific skills (`/rev
 
 <spec_tree_review_workflow>
 
-## Step 1: Load tree context
+<step name="load_context">
+
+**Step 1: Load tree context**
 
 Check for `<SPEC_TREE_FOUNDATION>` and `<SPEC_TREE_CONTEXT>` markers. If absent, invoke `/understanding` and `/contextualizing` first.
 
@@ -33,7 +36,11 @@ This loads:
 - Lower-index sibling specs
 - Lower-level child specs (if any)
 
-## Step 2: Execute the four foundational review phases
+</step>
+
+<step name="foundational_review">
+
+**Step 2: Execute the four foundational review phases**
 
 Execute the 4-phase protocol from `${SKILL_DIR}/references/review-protocol.md` in order. Stop at first REJECT.
 
@@ -44,7 +51,11 @@ Execute the 4-phase protocol from `${SKILL_DIR}/references/review-protocol.md` i
 
 Use language-specific grep patterns when checking for mocking, skip patterns, etc.
 
-## Step 3: Tree-level coverage analysis
+</step>
+
+<step name="tree_coverage">
+
+**Step 3: Tree-level coverage analysis**
 
 After the foundational phases pass, verify coverage across the tree:
 
@@ -76,7 +87,11 @@ For assertions at ancestor nodes:
 - If a child node provides evidence for a parent assertion, the parent assertion should link to it
 - If an ancestor accumulates many cross-cutting assertions without dedicated tests, flag for potential enabler extraction
 
-## Step 4: Invoke language-specific review
+</step>
+
+<step name="language_review">
+
+**Step 4: Invoke language-specific review**
 
 After tree-level review passes, invoke the language-specific review skill for additional phases:
 
@@ -85,7 +100,11 @@ After tree-level review passes, invoke the language-specific review skill for ad
 
 These skills add language-specific rejection triggers (mocking patterns, type annotations, etc.).
 
-## Step 5: Issue verdict
+</step>
+
+<step name="verdict">
+
+**Step 5: Issue verdict**
 
 Binary verdict. No middle ground.
 
@@ -96,6 +115,8 @@ Binary verdict. No middle ground.
 - File:line locations for each rejection reason
 - How tests could pass while assertion fails (the adversarial explanation)
 - Tree-level findings (orphans, coverage gaps, cross-cutting issues)
+
+</step>
 
 </spec_tree_review_workflow>
 

@@ -3,6 +3,7 @@ name: aligning
 description: >-
   ALWAYS invoke this skill when reviewing, auditing, or checking spec file conformance.
   NEVER check spec conformance without this skill.
+allowed-tools: Read, Glob, Grep
 ---
 
 <objective>
@@ -32,47 +33,48 @@ Check Spec Tree files for conformance to templates, atemporal voice, and content
 
 <accessing_references>
 
-## How to Access Rules
-
 All conformance rules come from the understanding skill, a sibling directory to this skill.
 
-### Understanding Skill Location
+<skill_location>
 
-When `/aligning` is loaded, Claude Code displays "Base directory for this skill:" with the absolute path. The understanding skill's files are at:
+The understanding skill is a sibling directory to this skill. Its files are at:
 
 ```text
-{base directory}/../understanding/
+${SKILL_DIR}/../understanding/
 ```
 
-### What to Read
+</skill_location>
+
+<what_to_read>
 
 **References (conformance rules):**
 
-- `../understanding/references/durable-map.md` — `<atemporal_voice>` section: temporal markers table and read-aloud test
-- `../understanding/references/what-goes-where.md` — `<common_misplacements>` table: content in wrong artifact type
-- `../understanding/references/node-types.md` — `<enabler>` and `<outcome>` sections: directory suffix classification
+- `${SKILL_DIR}/../understanding/references/durable-map.md` — `<atemporal_voice>` section: temporal markers table and read-aloud test
+- `${SKILL_DIR}/../understanding/references/what-goes-where.md` — `<common_misplacements>` table: content in wrong artifact type
+- `${SKILL_DIR}/../understanding/references/node-types.md` — `<enabler>` and `<outcome>` sections: directory suffix classification
 
 **Templates (structural rules):**
 
-- `../understanding/templates/decisions/decision-name.adr.md` — required ADR sections
-- `../understanding/templates/decisions/decision-name.pdr.md` — required PDR sections
-- `../understanding/templates/product/product-name.product.md` — required product sections
-- `../understanding/templates/nodes/enabler-name.md` — required enabler sections
-- `../understanding/templates/nodes/outcome-name.md` — required outcome sections
+- `${SKILL_DIR}/../understanding/templates/decisions/decision-name.adr.md` — required ADR sections
+- `${SKILL_DIR}/../understanding/templates/decisions/decision-name.pdr.md` — required PDR sections
+- `${SKILL_DIR}/../understanding/templates/product/product-name.product.md` — required product sections
+- `${SKILL_DIR}/../understanding/templates/nodes/enabler-name.md` — required enabler sections
+- `${SKILL_DIR}/../understanding/templates/nodes/outcome-name.md` — required outcome sections
 
-### Troubleshooting
+</what_to_read>
+
+<troubleshooting>
 
 If you cannot find understanding's files:
 
-1. Use the sibling path from this skill's base directory
-2. Glob: `{base directory}/../understanding/references/*.md`
-3. Do NOT look in the user's project directory for references or templates
+1. Glob: `${SKILL_DIR}/../understanding/references/*.md`
+2. Do NOT look in the user's project directory for references or templates
+
+</troubleshooting>
 
 </accessing_references>
 
 <file_classification>
-
-## How to Classify Files
 
 Classify each `.md` file in scope by its filename extension or parent directory suffix:
 
@@ -98,9 +100,7 @@ Classify each `.md` file in scope by its filename extension or parent directory 
 
 <conformance_dimensions>
 
-## What to Check
-
-### 1. Structural Conformance
+<structural_conformance>
 
 Compare each classified file's `##` headings against its template's `##` headings.
 
@@ -115,7 +115,9 @@ Compare each classified file's `##` headings against its template's `##` heading
 - Extra sections beyond the template (specs may have project-specific additions)
 - Missing optional sections (templates mark optional sections with "Only include if...")
 
-### 2. Language Conformance
+</structural_conformance>
+
+<language_conformance>
 
 Read the `<atemporal_voice>` section from `durable-map.md`. It provides two checking mechanisms:
 
@@ -142,7 +144,9 @@ Common temporal patterns caught by the read-aloud test that may not appear in th
 - Content inside code fences
 - Content inside HTML comments
 
-### 3. Content Placement Conformance
+</language_conformance>
+
+<placement_conformance>
 
 Read the `<common_misplacements>` table from `what-goes-where.md`. For each row, check whether the file contains content that belongs elsewhere.
 
@@ -162,11 +166,11 @@ Read the `<common_misplacements>` table from `what-goes-where.md`. For each row,
 - File, approximate location, what content was found, where it belongs per the table
 - Reference: `(ref: what-goes-where)`
 
+</placement_conformance>
+
 </conformance_dimensions>
 
 <workflow>
-
-## Step by Step
 
 1. **Gate**: Check conversation for `<SPEC_TREE_FOUNDATION>` marker. If absent, stop: "Invoke `/understanding` first."
 2. **Load rules**: Read all references and templates listed in `<accessing_references>` from the understanding skill's directory.
@@ -182,8 +186,6 @@ Read the `<common_misplacements>` table from `what-goes-where.md`. For each row,
 </workflow>
 
 <report_format>
-
-## Output Format
 
 ```text
 ## Alignment Report: {scope}

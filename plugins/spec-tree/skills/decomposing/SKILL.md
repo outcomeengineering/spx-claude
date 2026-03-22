@@ -16,11 +16,11 @@ Decompose an existing Spec Tree node into child nodes when it contains multiple 
 
 **PREREQUISITE**: Check for `<SPEC_TREE_FOUNDATION>` marker. If absent, invoke `/understanding` first.
 
-Read the reference material from the understanding skill before decomposing:
+Read the reference material from the understanding skill (`${SKILL_DIR}/../understanding/`) before decomposing:
 
-- `understanding` skill → `references/decomposition-semantics.md` — when to decompose, enabler vs outcome, depth, shared enabler extraction
-- `understanding` skill → `references/ordering-rules.md` — sparse integer ordering, insertion, fractional indexing
-- `understanding` skill → `references/node-types.md` — enabler and outcome structure, directory layout
+- `${SKILL_DIR}/../understanding/references/decomposition-semantics.md` — when to decompose, enabler vs outcome, depth, shared enabler extraction
+- `${SKILL_DIR}/../understanding/references/ordering-rules.md` — sparse integer ordering, insertion, fractional indexing
+- `${SKILL_DIR}/../understanding/references/node-types.md` — enabler and outcome structure, directory layout
 
 Then follow the workflow below.
 
@@ -170,13 +170,13 @@ For each child node:
 3. Create the `tests/` directory
 4. Write the spec content:
 
-**For outcomes:** Use the outcome template from `understanding` → `templates/nodes/outcome-name.md`. Write the three-part hypothesis:
+**For outcomes:** Use the outcome template from `${SKILL_DIR}/../understanding/templates/nodes/outcome-name.md`. Write the three-part hypothesis:
 
 - **Output** — what the software does (tested by assertions)
 - **Outcome** — measurable change in user behavior
 - **Impact** — business value
 
-**For enablers:** Use the enabler template from `understanding` → `templates/nodes/enabler-name.md`. Write the enables statement.
+**For enablers:** Use the enabler template from `${SKILL_DIR}/../understanding/templates/nodes/enabler-name.md`. Write the enables statement.
 
 5. Add assertions redistributed from the parent.
 
@@ -207,6 +207,40 @@ If a child exceeds ~7 assertions, flag it for recursive decomposition — but do
 
 </workflow>
 
+<failure_modes>
+
+**Failure 1: Over-decomposed a coherent node**
+
+Agent decomposed an outcome with 5 tightly coupled assertions into 3 children. Each child ended up with 1–2 assertions that made no sense in isolation. The assertions were about phases of a single user workflow (initiate → process → confirm) and could only be validated together. The decomposition created structure without value.
+
+How to avoid: Before decomposing, ask: "Can any of these children be validated independently?" If the answer is no — if testing one child requires setting up the others — the node is cohesive and should stay whole.
+
+**Failure 2: Lost assertions during redistribution**
+
+Agent moved 8 assertions from a parent into 3 children but only accounted for 7. One cross-cutting assertion about error handling spanned multiple children and was dropped because it didn't cleanly fit any single child. The parent spec was rewritten without it.
+
+How to avoid: Before writing child specs, count the parent's assertions. After writing all children, count the total across children plus remaining parent assertions. These counts must match. Assertions that don't fit a single child are cross-cutting — they stay in the parent.
+
+**Failure 3: Created enabler with single dependent**
+
+Agent extracted a "database schema" enabler that only one sibling depended on. This violated the 2+ dependent rule and created unnecessary indirection — an extra node, an extra spec file, an extra directory, all wrapping what should have been internal to the outcome.
+
+How to avoid: Before extracting an enabler, enumerate which siblings depend on it. If the count is 1, the infrastructure belongs inside that outcome, not as a separate enabler.
+
+**Failure 4: Temporal language in child specs inherited from parent**
+
+Agent decomposed a parent whose hypothesis read: "We believe that improving the search experience will increase conversion." The child specs inherited temporal fragments: "Improves the search experience by adding filters" (narrates an improvement journey). The atemporal version: "Search results support filtering by date, type, and status."
+
+How to avoid: Decomposition is an opportunity to fix temporal language, not propagate it. When redistributing content from parent to children, apply the read-aloud test to every sentence in every child spec.
+
+**Failure 5: Decomposed by implementation layer**
+
+Agent split an outcome into "frontend," "backend," and "database" children. These are implementation layers, not independent concerns. The frontend child's assertions couldn't be validated without the backend, and vice versa. Users don't care about layers — they care about behaviors.
+
+How to avoid: Name each candidate child by the user-facing behavior it delivers, not by the technical component. If you can't describe what user value a child delivers without referencing another child, the split is wrong.
+
+</failure_modes>
+
 <anti_patterns>
 
 **Decomposing by implementation layer.** Don't create children like "frontend," "backend," "database." Decompose by user-facing concern or shared infrastructure.
@@ -231,7 +265,7 @@ Decomposition is complete when:
 - [ ] Each child has correct node type (enabler or outcome)
 - [ ] Sparse integer indices assigned following ordering rules
 - [ ] All assertions redistributed (none lost, cross-cutting in parent)
-- [ ] Child specs written using templates from understanding
+- [ ] Child specs written using templates from `${SKILL_DIR}/../understanding/templates/`
 - [ ] Parent spec revised to reflect decomposition
 - [ ] Validation checklist passes
 

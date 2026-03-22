@@ -16,12 +16,12 @@ Apply structural changes to the Spec Tree: move nodes between parents, re-scope 
 
 **PREREQUISITE**: Check for `<SPEC_TREE_FOUNDATION>` marker. If absent, invoke `/understanding` first.
 
-References from the `understanding` skill:
+References from the understanding skill (`${SKILL_DIR}/../understanding/`):
 
-- `references/decomposition-semantics.md` — enabler extraction, cross-cutting assertions
-- `references/ordering-rules.md` — index assignment, dependency encoding
-- `references/what-goes-where.md` — content taxonomy (what belongs where)
-- `references/node-types.md` — enabler vs outcome
+- `${SKILL_DIR}/../understanding/references/decomposition-semantics.md` — enabler extraction, cross-cutting assertions
+- `${SKILL_DIR}/../understanding/references/ordering-rules.md` — index assignment, dependency encoding
+- `${SKILL_DIR}/../understanding/references/what-goes-where.md` — content taxonomy (what belongs where)
+- `${SKILL_DIR}/../understanding/references/node-types.md` — enabler vs outcome
 
 </quick_start>
 
@@ -118,7 +118,7 @@ Before applying changes, determine what will be affected:
 5. Update cross-cutting assertion links in ancestor specs that pointed to the old path.
 6. Remove the old directory.
 
-**Index assignment**: Use ordering rules from `understanding` → `references/ordering-rules.md`. If inserting between existing siblings, use the midpoint.
+**Index assignment**: Use ordering rules from `${SKILL_DIR}/../understanding/references/ordering-rules.md`. If inserting between existing siblings, use the midpoint.
 
 </step>
 
@@ -142,7 +142,7 @@ Before applying changes, determine what will be affected:
 
 1. Determine the enabler's index — must be lower than all dependent siblings.
 2. Create the enabler directory: `{NN}-{slug}.enabler/`
-3. Write the enabler spec using the template from `understanding` → `templates/nodes/enabler-name.md`.
+3. Write the enabler spec using the template from `${SKILL_DIR}/../understanding/templates/nodes/enabler-name.md`.
 4. Write assertions that specify what the enabler provides.
 5. Create the `tests/` directory.
 6. Remove the shared content from each dependent node's spec.
@@ -180,7 +180,7 @@ After applying any operation:
 - [ ] ADR/PDR scope correct — nodes are governed by the decisions in their ancestry
 - [ ] Cross-cutting assertions in ancestors still reference valid paths
 - [ ] Atemporal voice maintained — no temporal language introduced
-- [ ] No content misplacement (per `understanding` → `references/what-goes-where.md`)
+- [ ] No content misplacement (per `${SKILL_DIR}/../understanding/references/what-goes-where.md`)
 
 </step>
 
@@ -215,6 +215,40 @@ If the refactoring revealed further issues (nodes with too many assertions, orph
 </step>
 
 </workflow>
+
+<failure_modes>
+
+**Failure 1: ADR scope silently lost after move**
+
+Agent moved a node from directory A to directory B. Directory A contained an ADR at index 15 that governed the moved node. After the move, the node was no longer a descendant of that ADR's scope — the architectural constraint silently disappeared. Tests continued to pass because they tested behavior, not ADR compliance.
+
+How to avoid: In the impact analysis step, glob for all ADRs/PDRs in the source ancestry. For each one, check whether the constraint still applies at the destination. If it does, either the ADR needs to move too or a new ADR must be created at the destination's scope.
+
+**Failure 2: Test links broken after move, not caught**
+
+Agent moved a node and its `tests/` directory but didn't update the assertion test links in ancestor specs that referenced `([test](old-path/tests/...))`. The assertions still claimed coverage, but the links pointed to nonexistent files.
+
+How to avoid: After any move, grep the entire `spx/` tree for the old path. Every match is a broken reference that must be updated. The validation step checks "every `([test](...))` resolves to an existing file" — run it.
+
+**Failure 3: Consolidated nodes with different hypotheses**
+
+Agent merged two "parsing" outcomes because they sounded similar. One parsed user input for validation; the other parsed API responses for data extraction. Different hypotheses, different users, different failure modes. The merged node's hypothesis became a vague compromise that fit neither concern well.
+
+How to avoid: Before consolidating, compare the hypotheses (for outcomes) or enables statements (for enablers). If they serve different users or have different "outcome" components in the three-part hypothesis, they are distinct nodes regardless of implementation similarity.
+
+**Failure 4: Used `mv` instead of `git mv` for tracked files**
+
+Agent used Bash `mv` to relocate a node directory. Git saw this as a deletion plus an unrelated new file. The file's history was lost, and `git blame` showed the move as the original author of all lines.
+
+How to avoid: Always use `git mv` for files tracked by git. This preserves rename detection and history. Check `git status` first — if the file shows as tracked, use `git mv`.
+
+**Failure 5: Temporal language introduced during re-scope**
+
+Agent moved assertions between nodes and rewrote the source node's hypothesis to explain what happened: "After extracting the validation concerns into the sibling node, this outcome focuses on data transformation." This narrates a refactoring history — it's temporal. The atemporal version: "This outcome transforms raw input into normalized records."
+
+How to avoid: When rewriting specs after structural changes, treat the rewrite as if the spec was always this way. The spec tree is a durable map — it states product truth, not a changelog. Apply the read-aloud test: if the sentence would sound strange to someone who never saw the old structure, it's temporal.
+
+</failure_modes>
 
 <anti_patterns>
 

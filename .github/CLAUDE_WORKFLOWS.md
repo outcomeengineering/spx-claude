@@ -1,6 +1,6 @@
 # Claude Code GitHub Workflows
 
-This repository uses reusable workflows from [spx-gh-actions](https://github.com/outcomeeng/spx-gh-actions) for Claude Code integration:
+This repository uses reusable workflows from [gh-actions](https://github.com/outcomeeng/gh-actions) for Claude Code integration:
 
 1. **`claude.yml`** - Interactive Claude assistant triggered by `@claude` mentions
 2. **`claude-code-review.yml`** - Automatic code review on pull requests
@@ -18,7 +18,7 @@ To customize behavior, add `with:` parameters to the workflow files:
 ```yaml
 jobs:
   claude:
-    uses: outcomeeng/spx-gh-actions/.github/workflows/claude.yml@main
+    uses: outcomeeng/gh-actions/.github/workflows/claude.yml@main
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     with:
@@ -27,7 +27,7 @@ jobs:
       allowed_tools: '--allowed-tools "Read,Grep,Glob,Bash(gh pr:*)"'
 ```
 
-See [spx-gh-actions README](https://github.com/outcomeeng/spx-gh-actions#configuration) for all available options.
+See [gh-actions README](https://github.com/outcomeeng/gh-actions#configuration) for all available options.
 
 ## Security
 

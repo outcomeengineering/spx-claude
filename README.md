@@ -53,6 +53,8 @@ claude plugin install typescript@outcomeeng
 > /commit                          # commit with Conventional Commits
 ```
 
+See the [full tutorial](docs/tutorial.md) for the complete workflow — from bootstrapping to handoffs.
+
 ### Also available (no spx CLI required)
 
 ```bash

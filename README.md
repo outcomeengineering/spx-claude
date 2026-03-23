@@ -35,8 +35,8 @@ claude plugin install claude@outcomeeng      # meta-skills for plugin developmen
 
 ```text
 > /bootstrap                       # set up a new spec tree
-> /author product                  # author a product spec
-> /author new outcome for search   # author a new outcome node
+> /author outcome for search       # author a new outcome node
+> /author ADR for caching strategy # author an architecture decision
 > /commit                          # commit with Conventional Commits
 > /tdd                             # start the TDD flow
 > /rtfm                            # stop ad hoc work, follow methodology

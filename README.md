@@ -24,29 +24,24 @@ SPX is the developer CLI for spec-driven development. See [@outcomeeng/spx on np
 claude plugin marketplace add outcomeeng/claude
 
 # Recommended plugins
-claude plugin install spx@outcomeeng         # productivity commands
-claude plugin install test@outcomeeng        # testing methodology
+claude plugin install spec-tree@outcomeeng   # spec-driven development + commands
 claude plugin install prose@outcomeeng       # writing and reviewing prose
 claude plugin install claude@outcomeeng      # meta-skills for plugin development
 ```
 
 ### 3. Use skills and commands
 
-**`spx` — productivity commands:**
+**`spec-tree` — spec-driven development + commands:**
 
 ```text
 > /commit                          # commit with Conventional Commits
 > /handoff                         # create context handoff for next session
 > /pickup                          # continue from a previous handoff
-> /rtfm                            # load specs and testing before coding
+> /tdd                             # start the TDD flow
+> /rtfm                            # stop ad hoc work, follow methodology
 > /clarify                         # gather requirements before executing
-```
-
-**`test` — testing methodology:**
-
-```text
-> /testing                         # route through the 5-stage testing methodology
-> Write tests for the parser       # Claude invokes /testing automatically
+> /testing                         # write tests driven by spec assertions
+> /coding                          # TDD flow: architect, test, code + review
 ```
 
 **`prose` — writing and reviewing:**
@@ -111,36 +106,32 @@ Credit: `/creating-skills` is inspired by [TÂCHES Claude Code Resources](https:
 
 ### spec-tree
 
-Spec Tree framework for spec-driven development. Supersedes `spx-legacy`.
+Spec Tree framework for spec-driven development. Three phases: spec-tree maintenance, implementation, commit.
 
-| Type  | Name               | Purpose                                       |
-| ----- | ------------------ | --------------------------------------------- |
-| Skill | `/understanding`   | Foundation skill — loaded before any other    |
-| Skill | `/contextualizing` | Show status, progress, what exists            |
-| Skill | `/authoring`       | Add, define, create specs and features        |
-| Skill | `/decomposing`     | Break down, split, scope work                 |
-| Skill | `/refactoring`     | Move nodes, re-scope, extract shared enablers |
-| Skill | `/aligning`        | Review, check consistency, audit, find gaps   |
-| Skill | `/testing`         | Create tests, run tests, check stale status   |
-
-### spx
-
-Productivity commands for spec-driven development. Includes commit workflow, context handoffs, and spec-aware commands.
-
-| Type    | Name                  | Purpose                                 |
-| ------- | --------------------- | --------------------------------------- |
-| Skill   | `/committing-changes` | Commit message guidance                 |
-| Command | `/commit`             | Git commit with Conventional Commits    |
-| Command | `/handoff`            | Create timestamped context handoff      |
-| Command | `/pickup`             | Load and continue from previous handoff |
-| Command | `/rtfm`               | Load specs and testing before coding    |
-| Command | `/clarify`            | Clarify ambiguous requirements          |
+| Type    | Name                  | Phase | Purpose                                        |
+| ------- | --------------------- | ----- | ---------------------------------------------- |
+| Skill   | `/understanding`      | 1     | Foundation skill — loaded before any other     |
+| Skill   | `/contextualizing`    | 1     | Deterministic context loading from tree        |
+| Skill   | `/authoring`          | 1     | Add, define, create specs and features         |
+| Skill   | `/decomposing`        | 1     | Break down, split, scope work                  |
+| Skill   | `/refactoring`        | 1     | Move nodes, re-scope, extract shared enablers  |
+| Skill   | `/aligning`           | 1     | Review, check consistency, audit, find gaps    |
+| Skill   | `/testing`            | 2     | Write tests driven by spec assertions          |
+| Skill   | `/reviewing-tests`    | 2     | Adversarial review of test evidence            |
+| Skill   | `/coding`             | 2     | TDD flow: architect, test, code + review gates |
+| Skill   | `/committing-changes` | 3     | Conventional Commits with selective staging    |
+| Command | `/commit`             |       | Git commit with Conventional Commits           |
+| Command | `/tdd`                |       | Start TDD flow                                 |
+| Command | `/rtfm`               |       | Stop ad hoc work, follow methodology           |
+| Command | `/clarify`            |       | Clarify ambiguous requirements                 |
+| Command | `/handoff`            |       | Create timestamped context handoff             |
+| Command | `/pickup`             |       | Load and continue from previous handoff        |
 
 Credit: `/handoff` is inspired by [TÂCHES Claude Code Resources](https://github.com/glittercowboy/taches-cc-resources/tree/main?tab=readme-ov-file#context-handoff).
 
 ### core
 
-Lightweight alternative to `spx` for projects that don't use spec-driven development. Provides the same `/commit`, `/handoff`, and `/pickup` commands without the spec-aware commands (`/rtfm`, `/clarify`). Install `spx` instead if your project has an `spx/` directory.
+Standalone commit workflow for projects that don't use the Spec Tree. Provides `/commit`, `/handoff`, and `/pickup` without spec-tree skills. Install `spec-tree` instead if your project has an `spx/` directory.
 
 | Type    | Name                  | Purpose                                 |
 | ------- | --------------------- | --------------------------------------- |
@@ -149,13 +140,14 @@ Lightweight alternative to `spx` for projects that don't use spec-driven develop
 | Command | `/handoff`            | Create timestamped context handoff      |
 | Command | `/pickup`             | Load and continue from previous handoff |
 
-### test
+### test (legacy)
 
-BDD testing methodology with three-level testing (Unit, Integration, E2E).
+Standalone testing methodology. Spec-tree users should use `spec-tree` instead, which includes testing as a superset.
 
-| Type  | Name       | Purpose                         |
-| ----- | ---------- | ------------------------------- |
-| Skill | `/testing` | Foundational testing principles |
+| Type  | Name               | Purpose                           |
+| ----- | ------------------ | --------------------------------- |
+| Skill | `/testing`         | Foundational testing methodology  |
+| Skill | `/reviewing-tests` | Foundational test review protocol |
 
 ### typescript
 
@@ -199,14 +191,6 @@ Frontend design and styling.
 | Type  | Name                  | Purpose                                |
 | ----- | --------------------- | -------------------------------------- |
 | Skill | `/designing-frontend` | Create distinctive frontend interfaces |
-
-### code
-
-Autonomous coding orchestration.
-
-| Type  | Name                   | Purpose                            |
-| ----- | ---------------------- | ---------------------------------- |
-| Skill | `/coding-autonomously` | Autonomous implementation patterns |
 
 ### specs (legacy)
 

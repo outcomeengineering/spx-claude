@@ -42,7 +42,7 @@ The tree structure enables deterministic context injection: the path from root t
 
 ### Node types
 
-Two node types replace the former capability/feature/story hierarchy:
+Two node types:
 
 | Node type   | Directory suffix | Spec header  | Purpose                                                            |
 | ----------- | ---------------- | ------------ | ------------------------------------------------------------------ |
@@ -74,7 +74,7 @@ Every assertion must link to at least one test file.
 
 ### Product file
 
-The root of every tree is `{product-name}.product.md`, capturing why the product exists and what change in user behavior it aims to achieve. This replaces the former PRD at product level.
+The root of every tree is `{product-name}.product.md`, capturing why the product exists and what change in user behavior it aims to achieve.
 
 ### Decision records
 
@@ -259,7 +259,7 @@ Skills for recording results into version control.
 
 ### Commands
 
-Commands provide dynamic context injection and invoke the corresponding skill. Absorbed from the former `spx` plugin.
+Commands provide dynamic context injection and invoke the corresponding skill.
 
 | Command    | Phase | Invokes              | Purpose                                               |
 | ---------- | ----- | -------------------- | ----------------------------------------------------- |
@@ -473,35 +473,3 @@ Superset of `test/reviewing-tests`. Incorporates the full adversarial review pro
 4. Stage specific files for one concern (never `git add .`).
 5. Write Conventional Commits message (imperative, under 50 chars).
 6. Commit, then repeat from step 4 for remaining concerns.
-
-## Current skills disposition
-
-### From `spx-legacy` plugin
-
-| Current skill (`spx-legacy` plugin)   | Disposition in `spec-tree` plugin                                         |
-| ------------------------------------- | ------------------------------------------------------------------------- |
-| `understanding-durable-map`           | Absorbed into `understanding` as reference material                       |
-| `understanding-outcome-decomposition` | Absorbed into `understanding`; rewritten for enabler/outcome model        |
-| `managing-spx`                        | Split: templates/structure to `understanding`, workflows to action skills |
-| `decomposing-prd-to-capabilities`     | Absorbed into `decomposing`; rewritten for tree decomposition             |
-| `decomposing-capability-to-features`  | Absorbed into `decomposing`; rewritten for tree decomposition             |
-| `decomposing-feature-to-stories`      | Absorbed into `decomposing`; rewritten for tree decomposition             |
-| `writing-prd`                         | Absorbed into `authoring`; PRD becomes product spec (`.product.md`)       |
-| `migrating-spec-to-spx`               | See `skill-structure-migration.md`                                        |
-| `understanding-spx`                   | Rewritten as `understanding` foundation skill                             |
-
-### From `spx` plugin (merged)
-
-The `spx` plugin was merged into `spec-tree` (commit `a153b0c`). The `code` plugin was removed in the same commit.
-
-| Former `spx` artifact       | Disposition in `spec-tree` plugin                                   |
-| --------------------------- | ------------------------------------------------------------------- |
-| `coding` skill              | Moved as implementation action skill                                |
-| `committing-changes` skill  | Moved as operations skill                                           |
-| `/commit` command           | Moved; invokes `committing-changes`                                 |
-| `/tdd` command              | Moved; invokes `coding`                                             |
-| `/rtfm` command             | Moved; invokes `coding`                                             |
-| `/clarify` command          | Moved                                                               |
-| `/handoff` command          | Moved                                                               |
-| `/pickup` command           | Moved                                                               |
-| `testing` skill (spec-tree) | Removed (was placeholder); redesigned as superset of `test/testing` |

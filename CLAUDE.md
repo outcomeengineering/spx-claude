@@ -323,7 +323,7 @@ Complete Python development workflow with testing, implementation, and review.
 
 ## Spec Tree Plugin
 
-Spec-driven development with the Spec Tree framework. Supersedes `spx-legacy` and `spx` (merged). Three phases: spec-tree maintenance, implementation, commit.
+Spec-driven development with the Spec Tree framework. Three phases: spec-tree maintenance, implementation, commit.
 
 ### Skills
 

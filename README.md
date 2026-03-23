@@ -1,6 +1,10 @@
 # Outcome Engineering Plugin Marketplace
 
-A Claude Code plugin marketplace (`outcomeeng/claude`) for [Outcome Engineering](https://outcome.engineering) and [SPX](https://spx.sh) — spec-driven development with skills and commands for testing, Python and TypeScript engineering, and productivity.
+A Claude Code plugin marketplace for [Outcome Engineering](https://outcome.engineering) and [SPX](https://spx.sh) — spec-driven development with skills and commands for testing, Python and TypeScript engineering, and productivity.
+
+> `/bootstrap` interviews you about your product, then scaffolds a spec tree — the durable map that drives all implementation.
+
+![Bootstrapping a spec tree — Claude interviews you about your product's scope](assets/tutorial/bootstrap/60-boostrap-02-questionnaire-02.png)
 
 ## Philosophy
 
@@ -107,6 +111,20 @@ Credit: `/creating-skills` is inspired by [TÂCHES Claude Code Resources](https:
 ### spec-tree
 
 Spec Tree framework for spec-driven development. Three phases: spec-tree maintenance, implementation, commit.
+
+<details>
+<summary><strong><code>/bootstrap</code> in action</strong> — interactive product interview → scaffold</summary>
+
+| Step                                                                   | Screenshot                                                                              |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| **Detect product** — reads CLAUDE.md, identifies what the product does | ![Detect product](assets/tutorial/bootstrap/20-boostrap-01-detect-product.png)          |
+| **Outcome hypothesis** — what user behavior change do you expect?      | ![Outcome hypothesis](assets/tutorial/bootstrap/50-boostrap-02-questionnaire-01.png)    |
+| **Scope** — what are the major concerns?                               | ![Scope question](assets/tutorial/bootstrap/60-boostrap-02-questionnaire-02.png)        |
+| **Shared infrastructure** — should anything be an enabler?             | ![Shared infrastructure](assets/tutorial/bootstrap/70-boostrap-02-questionnaire-03.png) |
+| **Confirm** — review the scaffold before creating files                | ![Confirm scaffold](assets/tutorial/bootstrap/80-boostrap-02-questionnaire-04.png)      |
+| **Result** — scaffold created with product spec, guides, and nodes     | ![Scaffold result](assets/tutorial/bootstrap/90-boostrap-02-questionnaire-05.png)       |
+
+</details>
 
 | Type    | Name                  | Phase | Purpose                                         |
 | ------- | --------------------- | ----- | ----------------------------------------------- |

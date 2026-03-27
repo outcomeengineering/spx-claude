@@ -129,7 +129,7 @@ When a downstream skill must abort, it provides this structured message:
 
 ### ADR Reference
 
-`spx/{NN}-{slug}.adr.md` or interleaved within capability/feature container
+`spx/{NN}-{slug}.adr.md` or interleaved within enabler/outcome node
 
 ### What Was Attempted
 
@@ -181,7 +181,7 @@ Read existing ADRs/PDRs to ensure consistency:
 
 - `spx/{NN}-{slug}.adr.md` - Product-level ADRs (interleaved at root)
 - `spx/{NN}-{slug}.pdr.md` - Product-level PDRs (interleaved at root)
-- ADRs/PDRs interleaved within capability/feature containers
+- ADRs/PDRs interleaved within enabler/outcome nodes
 
 ---
 
@@ -189,11 +189,11 @@ Read existing ADRs/PDRs to ensure consistency:
 
 You produce ADRs. The scope depends on what you're deciding:
 
-| Decision Scope      | ADR Location                                     | Example                                |
-| ------------------- | ------------------------------------------------ | -------------------------------------- |
-| Product-wide        | `spx/{NN}-{slug}.adr.md`                         | "Use Pydantic for all data validation" |
-| Capability-specific | `spx/{NN}-{slug}.capability/{NN}-{slug}.adr.md`  | "Clone tree approach for snapshots"    |
-| Feature-specific    | `spx/.../{NN}-{slug}.feature/{NN}-{slug}.adr.md` | "Use rclone sync with --checksum"      |
+| Decision Scope | ADR Location                                     | Example                                |
+| -------------- | ------------------------------------------------ | -------------------------------------- |
+| Product-wide   | `spx/{NN}-{slug}.adr.md`                         | "Use Pydantic for all data validation" |
+| Node-specific  | `spx/{NN}-{slug}.enabler/{NN}-{slug}.adr.md`     | "Clone tree approach for snapshots"    |
+| Nested node    | `spx/.../{NN}-{slug}.outcome/{NN}-{slug}.adr.md` | "Use rclone sync with --checksum"      |
 
 ### ADR Numbering
 
@@ -203,12 +203,11 @@ You produce ADRs. The scope depends on what you're deciding:
 - Append using: `new = floor((last + 99) / 2)`
 - First ADR in scope: use 21
 
-See `specs:managing-specs` skill `<adr_templates>` section for complete BSP numbering rules.
+See `/authoring` skill for complete ordering rules.
 
 **Within-scope dependency order**:
 
-- Capability ADRs: adr-21 must be decided before adr-37
-- Feature ADRs: adr-21 must be decided before adr-37
+- Node ADRs: adr-21 must be decided before adr-37
 - Product ADRs: adr-21 must be decided before adr-37
 
 **Cross-scope dependencies**: Must be documented explicitly in ADR "Context" section using markdown links.
@@ -221,14 +220,14 @@ Execute these phases IN ORDER.
 
 ### Phase 0: Read Context
 
-1. **Read the feature spec** completely (requirements, test strategy, outcomes)
+1. **Read the node spec** completely (requirements, test strategy, assertions)
 2. **Read project context**:
    - `spx/CLAUDE.md` - Project structure, navigation, work item management
 3. **Consult `/testing`** - Get level definitions and principles (5 stages, 5 factors, 7 exceptions)
 4. **Read existing ADRs** for consistency:
    - `spx/{NN}-{slug}.adr.md` - Product-level ADRs
-   - ADRs interleaved within capability/feature containers
-5. **Read `/managing-specs` skill `<adr_templates>` section for ADR template**
+   - ADRs interleaved within enabler/outcome nodes
+5. **Read `/authoring` skill for ADR template**
 
 ### Phase 1: Identify Decisions Needed
 
@@ -292,8 +291,8 @@ Use the project's template. Each ADR must include:
 ### Phase 4: Verify Consistency
 
 - No ADR should contradict another
-- Capability ADRs must align with project ADRs
-- Feature ADRs must align with capability ADRs
+- Node ADRs must align with ancestor ADRs
+- Nested ADRs must not contradict parent-level ADRs
 
 ### Phase 5: Submit to Architecture Reviewer (MANDATORY)
 
@@ -482,27 +481,27 @@ See `/testing` for methodology and `/testing-python` for Python patterns.
 
 ### ADRs Written
 
-| ADR                                                            | Scope         | Decision Summary                        |
-| -------------------------------------------------------------- | ------------- | --------------------------------------- |
-| [Type Safety](spx/21-type-safety.adr.md)                       | Product       | Use strict Mypy, Pydantic at boundaries |
-| [Clone Tree](spx/10-snapshots.capability/21-clone-tree.adr.md) | Capability-10 | Clone-based snapshot traversal          |
+| ADR                                                         | Scope                | Decision Summary                        |
+| ----------------------------------------------------------- | -------------------- | --------------------------------------- |
+| [Type Safety](spx/21-type-safety.adr.md)                    | Product              | Use strict Mypy, Pydantic at boundaries |
+| [Clone Tree](spx/10-snapshots.enabler/21-clone-tree.adr.md) | 10-snapshots enabler | Clone-based snapshot traversal          |
 
 ### Key Constraints for Downstream Skills
 
 1. **coding-python must**:
    - {constraint from [Type Safety](spx/21-type-safety.adr.md)}
-   - {constraint from [Clone Tree](spx/10-snapshots.capability/21-clone-tree.adr.md)}
+   - {constraint from [Clone Tree](spx/10-snapshots.enabler/21-clone-tree.adr.md)}
 
 2. **reviewing-python must verify**:
    - {verification from [Type Safety](spx/21-type-safety.adr.md)}
-   - {verification from [Clone Tree](spx/10-snapshots.capability/21-clone-tree.adr.md)}
+   - {verification from [Clone Tree](spx/10-snapshots.enabler/21-clone-tree.adr.md)}
 
 ### Abort Conditions
 
 If any of these assumptions fail, downstream skills must ABORT:
 
 1. {assumption from [Type Safety](spx/21-type-safety.adr.md)}
-2. {assumption from [Clone Tree](spx/10-snapshots.capability/21-clone-tree.adr.md)}
+2. {assumption from [Clone Tree](spx/10-snapshots.enabler/21-clone-tree.adr.md)}
 
 ### Ready for Implementation
 

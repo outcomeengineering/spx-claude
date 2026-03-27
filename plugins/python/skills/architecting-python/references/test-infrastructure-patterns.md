@@ -112,8 +112,8 @@ from mypackage_testing.fixtures import create_user  # ✅ Works everywhere
 
 ```
 project/
-├── specs/.../story-21/tests/test_generics.py  # Co-located tests
-├── specs/.../story-54/tests/test_generics.py  # DIFFERENT co-located tests (same filename!)
+├── spx/.../21-foo.outcome/tests/test_generics.py  # Co-located tests
+├── spx/.../54-bar.outcome/tests/test_generics.py  # DIFFERENT co-located tests (same filename!)
 └── legacy/tests/test_generics.py              # Legacy tests
 ```
 

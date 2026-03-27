@@ -429,8 +429,8 @@ project/
 │   └── harnesses/          # Test infrastructure (CLI harness, etc.)
 └── spx/                    # Specs as durable map (Outcome Engineering framework)
     ├── CLAUDE.md           # Navigation and work item management
-    └── NN-{slug}.capability/
-        └── NN-{slug}.feature/
+    └── NN-{slug}.enabler/
+        └── NN-{slug}.outcome/
             └── tests/      # Co-located tests with level suffix naming
                 ├── test_foo.unit.py
                 ├── test_bar.integration.py

@@ -7,8 +7,8 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
 <objective>
-Write or fix test files for a story specification. This skill handles both:
-1. **Writing new tests** - Given a story spec, produce test files
+Write or fix test files for a node specification. This skill handles both:
+1. **Writing new tests** - Given a node spec, produce test files
 2. **Fixing rejected tests** - Given reviewer feedback, fix existing tests
 
 **This skill WRITES tests. It does not just design or plan.**
@@ -18,7 +18,7 @@ Write or fix test files for a story specification. This skill handles both:
 **Determine which mode you're in:**
 
 1. **WRITE mode** - Tests don't exist yet or you're starting fresh
-   - Check: `ls {story_path}/tests/*.py` returns nothing or minimal files
+   - Check: `ls {node_path}/tests/*.py` returns nothing or minimal files
    - Action: Follow full workflow below
 
 2. **FIX mode** - Tests exist but were rejected by reviewer
@@ -29,9 +29,9 @@ Write or fix test files for a story specification. This skill handles both:
 </mode_detection>
 
 <quick_start>
-**Input:** Story spec path (e.g., `spx/01-capability/02-feature/21-story.story/`)
+**Input:** Node spec path (e.g., `spx/21-infra.enabler/43-parser.outcome/`)
 
-**Output:** Test files written to `{story}/tests/` directory
+**Output:** Test files written to `{node}/tests/` directory
 
 **Workflow:**
 
@@ -47,26 +47,26 @@ Check mode → WRITE or FIX → Execute → Verify → Report
 
 ### Step 1: Load Context
 
-Read the story spec and related files:
+Read the node spec and related files:
 
 ```bash
-# Read story spec
-cat {story_path}/{story_name}.story.md
+# Read node spec
+cat {node_path}/{slug}.outcome.md
 
-# Read parent feature for context
-cat {feature_path}/{feature_name}.feature.md
+# Read parent node for context (if nested)
+cat {parent_path}/{slug}.enabler.md
 
 # Check for ADRs/PDRs that constrain testing approach
-ls {capability_path}/*.adr.md {capability_path}/*.pdr.md {feature_path}/*.adr.md {feature_path}/*.pdr.md 2>/dev/null
+ls {node_path}/../*.adr.md {node_path}/../*.pdr.md 2>/dev/null
 ```
 
 Extract from the spec:
 
-- **Outcomes** - Gherkin scenarios to verify
+- **Assertions** - Typed assertions to verify
 - **Test Strategy** - Which levels are specified
 - **Harnesses** - Any referenced test harnesses
 
-**Note on Analysis sections (stories only):** The Analysis section documents what the spec author examined. It provides context but is not binding — implementation may diverge as understanding deepens. Use it as a starting point, not a contract.
+**Note on Analysis sections:** The Analysis section documents what the spec author examined. It provides context but is not binding — implementation may diverge as understanding deepens. Use it as a starting point, not a contract.
 
 ### Step 2: Determine Test Levels
 
@@ -97,7 +97,7 @@ Create test files following `/standardizing-python-testing`:
 ### Step 4: Verify Tests Fail (RED)
 
 ```bash
-uv run --extra dev pytest {story_path}/tests/ -v
+uv run --extra dev pytest {node_path}/tests/ -v
 ```
 
 Tests should FAIL with ImportError or AssertionError (implementation doesn't exist yet).
@@ -150,13 +150,13 @@ For each rejection reason:
 
 ```bash
 # Run tests again
-uv run --extra dev pytest {story_path}/tests/ -v
+uv run --extra dev pytest {node_path}/tests/ -v
 
 # Check types
-uv run --extra dev mypy {story_path}/tests/
+uv run --extra dev mypy {node_path}/tests/
 
 # Check linting
-uv run --extra dev ruff check {story_path}/tests/
+uv run --extra dev ruff check {node_path}/tests/
 ```
 
 ### Step 4: Report What Was Fixed
@@ -215,7 +215,7 @@ See `/standardizing-python-testing` for:
 ```markdown
 ## Tests Written
 
-### Story: {story_path}
+### Node: {node_path}
 
 ### Test Files Created
 
@@ -250,7 +250,7 @@ Tests pass checklist. Ready for re-review.
 
 Task is complete when:
 
-- [ ] Test files exist in `{story}/tests/` directory
+- [ ] Test files exist in `{node}/tests/` directory
 - [ ] Each assertion from spec has corresponding test(s)
 - [ ] Tests follow `/standardizing-python-testing` standards
 - [ ] Tests run and fail for expected reasons

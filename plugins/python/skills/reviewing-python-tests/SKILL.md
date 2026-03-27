@@ -173,15 +173,15 @@ If all gates passed (foundational 1–4 + Python 5–6), issue APPROVED. Otherwi
 <concrete_examples>
 **Example 1: APPROVED verdict**
 
-Reviewing `spx/01-uart/03-transmitter.story/`
+Reviewing `spx/21-uart.enabler/43-transmitter.outcome/`
 
 Phase 1 checks (from /reviewing-tests):
 
 ```bash
-$ grep -A 5 "^### Scenarios" transmitter.story.md
-### Scenarios
+$ grep -A 5 "^### Assertions" transmitter.outcome.md
+### Assertions
 
-- Given a UartTx configured for 8N1 at 115200 baud, when byte 0x55 is written, then TX line outputs start bit, 8 data bits (LSB first), and stop bit ([test](tests/test_uart_tx_unit.py))
+- MUST: Given a UartTx configured for 8N1 at 115200 baud, when byte 0x55 is written, then TX line outputs start bit, 8 data bits (LSB first), and stop bit ([test](tests/test_uart_tx_unit.py))
 
 $ ls -la tests/test_uart_tx_unit.py
 -rw-r--r-- 1 user group 2847 Jan 15 10:23 tests/test_uart_tx_unit.py
@@ -214,7 +214,7 @@ $ grep -rn "def test_" tests/ | grep -v "-> None"
 
 **Example 2: REJECT verdict**
 
-Reviewing `spx/02-hdl/08-verilog-gen.story/`
+Reviewing `spx/32-hdl.enabler/54-verilog-gen.outcome/`
 
 Phase 2.2 finds silent skip:
 

@@ -641,9 +641,9 @@ Test level is indicated by filename suffix:
 
 ```text
 spx/
-└── {capability}/
-    └── {feature}/
-        ├── {feature}.md
+└── {NN}-{slug}.enabler/
+    └── {NN}-{slug}.outcome/
+        ├── {slug}.outcome.md
         └── tests/
             ├── test_{name}.unit.py
             ├── test_{name}.integration.py

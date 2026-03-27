@@ -34,7 +34,7 @@ Before invoking this skill:
 
 1. **Tests must exist** - Written by `/testing-python`
 2. **Tests must be reviewed** - Approved by `/reviewing-python-tests`
-3. **Spec must be loaded** - Context from `/understanding-specs`
+3. **Spec must be loaded** - Context from `/spec-tree:contextualizing`
 
 If tests don't exist or aren't approved, go back to earlier steps.
 </prerequisites>
@@ -49,10 +49,10 @@ Read the existing tests to understand:
 
 ```bash
 # Read test files
-cat {story_path}/tests/*.py
+cat {node_path}/tests/*.py
 
 # Run tests to see failures
-uv run --extra dev pytest {story_path}/tests/ -v
+uv run --extra dev pytest {node_path}/tests/ -v
 ```
 
 Understand:
@@ -86,7 +86,7 @@ class Deps:
 ### Step 3: Run Tests (Verify GREEN)
 
 ```bash
-uv run --extra dev pytest {story_path}/tests/ -v
+uv run --extra dev pytest {node_path}/tests/ -v
 ```
 
 All tests should pass. If any fail, fix implementation and re-run.
@@ -109,7 +109,7 @@ uv run --extra dev mypy src/
 uv run --extra dev ruff check src/
 
 # Tests one more time
-uv run --extra dev pytest {story_path}/tests/ -v
+uv run --extra dev pytest {node_path}/tests/ -v
 ```
 
 All must pass before declaring complete.
@@ -145,7 +145,7 @@ For each rejection reason:
 
 ```bash
 # Run tests
-uv run --extra dev pytest {story_path}/tests/ -v
+uv run --extra dev pytest {node_path}/tests/ -v
 
 # Type checking
 uv run --extra dev mypy src/
@@ -235,7 +235,7 @@ def get_user(user_id: int) -> User | None:
 ```markdown
 ## Implementation Complete
 
-### Story: {story_path}
+### Node: {node_path}
 
 ### Files Created/Modified
 
@@ -274,7 +274,7 @@ All checks pass. Ready for re-review.
 
 Task is complete when:
 
-- [ ] All tests in `{story}/tests/` pass
+- [ ] All tests in `{node}/tests/` pass
 - [ ] Type checking passes (`mypy`)
 - [ ] Linting passes (`ruff check`)
 - [ ] Code uses named constants (no magic values)

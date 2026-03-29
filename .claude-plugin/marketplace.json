@@ -10,7 +10,7 @@
     {
       "name": "legacy",
       "source": "./plugins/legacy",
-      "description": "Standalone /commit, /handoff, /pickup for projects without the spx CLI"
+      "description": "Standalone /commit, /handoff, /pickup, /testing, /reviewing-tests for projects without the spx CLI"
     },
     {
       "name": "claude",
@@ -21,11 +21,6 @@
       "name": "frontend",
       "source": "./plugins/frontend",
       "description": "Frontend design: /designing-frontend skill"
-    },
-    {
-      "name": "test",
-      "source": "./plugins/test",
-      "description": "Behavior-driven testing: /testing (foundational)"
     },
     {
       "name": "typescript",

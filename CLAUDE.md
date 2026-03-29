@@ -150,11 +150,7 @@ plugins/{plugin-name}/.claude-plugin/plugin.json
 **IMPORTANT:** Validate after any changes:
 
 ```bash
-# Validate marketplace.json
-claude plugin validate .
-
-# Validate plugin.json
-find plugins -maxdepth 1 -type d -mindepth 1 -exec claude plugin validate {} \;
+just check
 ```
 
 ### Version Bump Workflow
@@ -360,17 +356,16 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 
 ### Commands
 
-| Command      | Purpose                                             |
-| ------------ | --------------------------------------------------- |
-| `/bootstrap` | Set up a new spec tree (invokes `/bootstrapping`)   |
-| `/author`    | Author a spec tree artifact (auto-detects type)     |
-| `/commit`    | Git commit with Conventional Commits (auto-context) |
-| `/tdd`       | Start spec-tree TDD flow (invokes `/coding`)        |
-| `/rtfm`      | Stop ad hoc work and follow the methodology         |
-| `/clarify`   | Clarify ambiguous requirements                      |
-| `/handoff`   | Create timestamped context handoff                  |
-| `/realize`   | Realize all potential nodes from `spx/POTENTIAL`    |
-| `/pickup`    | Load and continue from previous handoff             |
+| Command      | Purpose                                                       |
+| ------------ | ------------------------------------------------------------- |
+| `/bootstrap` | Set up a new spec tree (invokes `/bootstrapping`)             |
+| `/author`    | Author a spec tree artifact (auto-detects type)               |
+| `/commit`    | Git commit with Conventional Commits (auto-context)           |
+| `/realize`   | Run TDD flow on a subtree or discover work from `spx/EXCLUDE` |
+| `/rtfm`      | Stop ad hoc work and follow the methodology                   |
+| `/clarify`   | Clarify ambiguous requirements                                |
+| `/handoff`   | Create timestamped context handoff                            |
+| `/pickup`    | Load and continue from previous handoff                       |
 
 ## Discovering Other Installed Skills
 
@@ -795,14 +790,16 @@ Error: Bash command permission check failed for pattern "!find .spx/sessions -ma
 
 5. **Document changes**: Update this [CLAUDE.md](CLAUDE.md:1) file if adding new commands/skills to the plugin tables
 
-6. **Stage and commit EVERYTHING together** in ONE commit:
+6. **Update bootstrapping template**: If the change affects skill structure, commands, or conventions that new projects inherit, update `plugins/spec-tree/skills/bootstrapping/templates/spx-claude.md` to match
+
+7. **Stage and commit EVERYTHING together** in ONE commit:
 
    ```bash
    git add plugins/{plugin-name}/ plugins/{plugin-name}/.claude-plugin/plugin.json
    git commit -m "type(scope): your changes including version bump"
    ```
 
-**Validation**: The pre-commit hook automatically validates marketplace and plugins. If validation fails, the commit is blocked until errors are fixed.
+**Validation**: Run `just check` before committing. The pre-commit hook also validates, but catching errors earlier is faster.
 
 ### Quick Reference: File Locations
 
@@ -848,8 +845,7 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   │   ├── handoff.md
 │   │   │   ├── pickup.md
 │   │   │   ├── realize.md
-│   │   │   ├── rtfm.md
-│   │   │   └── tdd.md
+│   │   │   └── rtfm.md
 │   │   └── skills/
 │   │       └── (11 skills)
 │   ├── test/                     # Standalone testing (non-spec-tree)

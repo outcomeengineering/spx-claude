@@ -49,7 +49,7 @@ claude plugin install typescript@outcomeeng
 > /author outcome for search       # author a new outcome node
 > /author PDR for auth policy      # author a product constraint
 > /author ADR for caching strategy # author an architecture decision
-> /tdd                             # start the TDD flow
+> /realize                         # start the TDD flow
 > /commit                          # commit with Conventional Commits
 ```
 
@@ -104,7 +104,7 @@ The core of [Outcome Engineering](https://outcome.engineering). Three phases: sp
 | Command | `/bootstrap`          |       | Set up a new spec tree                          |
 | Command | `/author`             |       | Author a spec tree artifact (auto-detects type) |
 | Command | `/commit`             |       | Git commit with Conventional Commits            |
-| Command | `/tdd`                |       | Start TDD flow                                  |
+| Command | `/realize`            |       | Run TDD flow on a subtree or from `spx/EXCLUDE` |
 | Command | `/rtfm`               |       | Stop ad hoc work, follow methodology            |
 | Command | `/clarify`            |       | Clarify ambiguous requirements                  |
 | Command | `/handoff`            |       | Create timestamped context handoff              |

@@ -154,10 +154,10 @@ The skill extracts typed assertions from the spec, determines what test evidence
 
 ## 6. Implement with TDD
 
-The `/tdd` command starts the full TDD flow — architecture, tests, then code — with review gates at each phase:
+The `/realize` command starts the full TDD flow — architecture, tests, then code — with review gates at each phase:
 
 ```text
-> /tdd
+> /realize spx/21-auth.outcome
 ```
 
 This invokes the `/coding` skill, which orchestrates 8 phases:
@@ -171,7 +171,9 @@ This invokes the `/coding` skill, which orchestrates 8 phases:
 7. Implement — via `/coding-python` or `/coding-typescript`
 8. Review code — loop until APPROVED
 
-<!-- TODO: Add screenshot of /tdd in action -->
+Without arguments, `/realize` determines work from conversation context or falls back to `spx/EXCLUDE`.
+
+<!-- TODO: Add screenshot of /realize in action -->
 
 ## 7. Commit changes
 
@@ -250,7 +252,7 @@ This stops the current ad hoc work and restarts the proper TDD flow from Phase 1
 | **Decompose** | Break down large nodes                            | `/decomposing`                   |
 | **Align**     | Check consistency and quality                     | `/aligning`                      |
 | **Test**      | Write tests from spec assertions                  | `/testing`                       |
-| **Implement** | TDD flow: architect → test → code                 | `/tdd`                           |
+| **Implement** | TDD flow: architect → test → code                 | `/realize`                       |
 | **Commit**    | Selective staging, Conventional Commits           | `/commit`                        |
 | **Hand off**  | Save context for next session                     | `/handoff` → `/pickup`           |
 | **Refactor**  | Restructure the tree                              | `/refactoring`                   |

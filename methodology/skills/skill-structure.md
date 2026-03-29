@@ -242,14 +242,14 @@ Skills for recording results into version control.
 
 Commands provide dynamic context injection and invoke the corresponding skill.
 
-| Command    | Phase | Invokes              | Purpose                                               |
-| ---------- | ----- | -------------------- | ----------------------------------------------------- |
-| `/clarify` | 1     | —                    | Gather requirements through questioning before acting |
-| `/handoff` | 1     | —                    | Create timestamped handoff for session continuity     |
-| `/pickup`  | 1     | —                    | Load handoff document to continue previous work       |
-| `/tdd`     | 2     | `coding`             | Start TDD flow with auto-injected project context     |
-| `/rtfm`    | 2     | `coding`             | Stop ad hoc work, restart proper TDD flow             |
-| `/commit`  | 3     | `committing-changes` | Git commit with auto-injected branch/status/diff      |
+| Command    | Phase | Invokes              | Purpose                                                       |
+| ---------- | ----- | -------------------- | ------------------------------------------------------------- |
+| `/clarify` | 1     | —                    | Gather requirements through questioning before acting         |
+| `/handoff` | 1     | —                    | Create timestamped handoff for session continuity             |
+| `/pickup`  | 1     | —                    | Load handoff document to continue previous work               |
+| `/realize` | 2     | `coding`             | Run TDD flow on a subtree or discover work from `spx/EXCLUDE` |
+| `/rtfm`    | 2     | `coding`             | Stop ad hoc work, restart proper TDD flow                     |
+| `/commit`  | 3     | `committing-changes` | Git commit with auto-injected branch/status/diff              |
 
 ## Ownership model
 

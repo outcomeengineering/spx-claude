@@ -259,6 +259,16 @@ Standalone commit workflow and foundational testing for projects without the spx
 | `/handoff` | Create timestamped context handoff                  |
 | `/pickup`  | Load and continue from previous handoff             |
 
+## HDL Plugin
+
+HDL engineering skills for VHDL code review.
+
+### Skills
+
+| Skill             | Purpose                                                   |
+| ----------------- | --------------------------------------------------------- |
+| `/reviewing-vhdl` | Idiomatic VHDL-2008 review with synthesizability analysis |
+
 ## Frontend Plugin
 
 Frontend design and coding skills and commands.
@@ -821,6 +831,9 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   ├── frontend/
 │   │   └── skills/
 │   │       └── designing-frontend/
+│   ├── hdl/                       # HDL engineering
+│   │   └── skills/
+│   │       └── reviewing-vhdl/
 │   ├── prose/
 │   │   └── skills/
 │   │       ├── standardizing-prose/

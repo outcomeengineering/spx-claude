@@ -1,0 +1,11 @@
+{
+  "name": "hdl",
+  "version": "0.1.0",
+  "description": "HDL engineering: idiomatic VHDL-2008 code review with synthesizability analysis",
+  "author": {
+    "name": "Simon Heimlicher"
+  },
+  "repository": "https://github.com/outcomeeng/claude",
+  "license": "MIT",
+  "keywords": ["vhdl", "fpga", "asic", "hdl", "synthesis"]
+}

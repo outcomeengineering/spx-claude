@@ -56,6 +56,11 @@
       "name": "visual",
       "source": "./plugins/visual",
       "description": "Visual diagrams: /excalidrawing (Excalidraw JSON generation)"
+    },
+    {
+      "name": "hdl",
+      "source": "./plugins/hdl",
+      "description": "HDL engineering: /reviewing-vhdl (idiomatic VHDL-2008 review with synthesizability analysis)"
     }
   ]
 }

@@ -168,6 +168,14 @@ Frontend design and styling. No spx CLI required.
 | ----- | --------------------- | -------------------------------------- |
 | Skill | `/designing-frontend` | Create distinctive frontend interfaces |
 
+### hdl
+
+HDL engineering skills for VHDL code review. No spx CLI required.
+
+| Type  | Name              | Purpose                                                   |
+| ----- | ----------------- | --------------------------------------------------------- |
+| Skill | `/reviewing-vhdl` | Idiomatic VHDL-2008 review with synthesizability analysis |
+
 ### legacy
 
 Standalone `/commit`, `/handoff`, `/pickup` for projects without the spx CLI. Install `spec-tree` instead if you have spx.

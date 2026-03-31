@@ -816,6 +816,9 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   └── marketplace.json          # Marketplace catalog
 ├── .spx/                          # Tool operational (gitignored)
 │   └── sessions/                  # Session handoffs
+├── outcomeeng/                    # Python package
+│   ├── scripts/                  # Build/validation tools
+│   └── testing/                  # Test infrastructure
 ├── plugins/
 │   ├── claude/                   # Meta-skills for plugin development
 │   │   └── skills/
@@ -864,8 +867,18 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   └── typescript/
 │       └── skills/
 │           └── (8 skills)
+├── pyproject.toml                 # uv project config + dev deps
 ├── spx/                           # Specs as durable map
-│   └── CLAUDE.md                 # Specs directory guide
+│   ├── CLAUDE.md                 # Specs directory guide
+│   ├── 15-validation.enabler/
+│   ├── 21-context-loading.outcome/
+│   └── 21-spec-tree.enabler/
+│       ├── 21-templates.enabler/
+│       ├── 32-decisions.enabler/
+│       │   └── 32-pdr-auditing.outcome/
+│       └── 32-evidence.enabler/
+│           ├── 21-sync-exclude.enabler/
+│           └── 32-test-auditing.outcome/
 └── CLAUDE.md                      # This file
 ```
 

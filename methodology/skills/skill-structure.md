@@ -228,7 +228,7 @@ Skills for using the spec tree to build software. Each builds on a standalone `t
 
 `spec-tree:auditing-tests` is a **superset** of `test/auditing-tests`. It incorporates the full adversarial review protocol (4 phases, binary verdict) and adds tree-level coverage analysis, cross-cutting assertion review, and decision record compliance from the full ancestor chain.
 
-`spec-tree:coding` orchestrates the TDD flow. Phases 1–2 load methodology and context via Phase 1 foundation skills. Phases 3–8 delegate to language-specific plugins (Python or TypeScript) for architecture, testing, and implementation — each with a review gate that loops until approved.
+`spec-tree:applying` orchestrates the TDD flow. Phases 1–2 load methodology and context via Phase 1 foundation skills. Phases 3–8 delegate to language-specific plugins (Python or TypeScript) for architecture, testing, and implementation — each with a review gate that loops until approved.
 
 ### Phase 3: Commit
 
@@ -247,8 +247,8 @@ Commands provide dynamic context injection and invoke the corresponding skill.
 | `/clarify` | 1     | —                    | Gather requirements through questioning before acting         |
 | `/handoff` | 1     | —                    | Create timestamped handoff for session continuity             |
 | `/pickup`  | 1     | —                    | Load handoff document to continue previous work               |
-| `/realize` | 2     | `coding`             | Run TDD flow on a subtree or discover work from `spx/EXCLUDE` |
-| `/rtfm`    | 2     | `coding`             | Stop ad hoc work, restart proper TDD flow                     |
+| `/apply`   | 2     | `applying`           | Run TDD flow on a subtree or discover work from `spx/EXCLUDE` |
+| `/rtfm`    | 2     | `applying`           | Stop ad hoc work, restart proper TDD flow                     |
 | `/commit`  | 3     | `committing-changes` | Git commit with auto-injected branch/status/diff              |
 
 ## Ownership model

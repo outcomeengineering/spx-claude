@@ -27,21 +27,24 @@ The Outcome Engineering methodology has evolved through three generations. Only 
 
 - ⚠️ **NEVER answer ANY question without invoking at least one skill first** - If the question touches testing, specs, code, architecture, or any topic covered by a skill, invoke the relevant skill BEFORE answering. Skills are the authoritative source — not grep results, not existing files, not your training data. See skill table below.
 - ⚠️ **NEVER write code without invoking a skill first** - See skill table below
-- ⚠️ **NEVER write tests in `tests/`** - Write in `spx/.../tests/` (co-located with specs)
 - ⚠️ **NEVER manually navigate `spx/` hierarchy** - Use `/contextualizing spx/path/to/node` skill
 - ⚠️ **ALWAYS read CLAUDE.md in subdirectories** - When working with files in `spx/`, or any other directory, read that directory's CLAUDE.md FIRST if it exists
 - ⚠️ **Skills are ALWAYS authoritative over existing files** - When a skill template prescribes a structure (e.g., Architectural Constraints table), follow the skill — not patterns found in existing spec files. Existing files may contain non-standard sections added before skills existed. Never infer framework conventions from existing files; always read the skill.
 - ⚠️ **NEVER maintain backward compatibility** - When rewriting a module, replace it entirely. No legacy aliases, no re-exports of old names, no shims. Update all imports across the codebase to use the new API.
-- ⚠️ **NEVER reference specs or decisions from code** - No `ADR-21`, `PDR-13`, or similar in Python comments or docstrings. Specs are the source of truth; code should not duplicate or point to them. The `semgrep` rule enforces this.
-- ⚠️ **NEVER edit `package.json` for dependency changes** - Use `just add`/`just remove` — they update package.json, lockfile, and venv atomically
+- ⚠️ **NEVER reference specs or decisions from code** - No `ADR-21`, `PDR-13`, or similar in code comments or docstrings. Specs are the source of truth; code should not duplicate or point to them. The `semgrep` rule enforces this.
 - ⚠️ **NEVER manually delete untracked files or empty directories** - Git doesn't track empty dirs; `.DS_Store` and `__pycache__` are gitignored artifacts. Use `just run clean` to remove them
-- ⚠️ **NEVER use agents to create or modify ANY files** - Agents (subagents, background agents) must ONLY be used for read-only research: searching code, reading files, running read-only commands. ALL file creation, editing, and writing MUST happen in the main conversation context. Agents lack context, create unauthorized files, conflict on shared config, and make unasked-for changes.
+- ⚠️ **NEVER use general-purpose agents to create or modify ANY files** - Agents (subagents, background agents) must ONLY be used for read-only research: searching code, reading files, running read-only commands. ALL file creation, editing, and writing MUST be done by the `applier` agent (see `spec-tree` plugin) or remain in the main conversation context
 - ⚠️ **Python skill examples use `product.*` / `product_testing.*`** - Not `src.*` or `src_testing.*`. The `src` convention is ambiguous across Python ecosystems; `product` is unambiguous and signals "the thing we're building"
 - ⚠️ **Audit skills (`auditing-*`) must be read-only** - They produce verdicts, not code changes. `allowed-tools` should not include `Write` or `Edit`. The calling workflow decides what happens after the verdict
+
 - ✅ **Always use `just run test`** - Never bare pytest (just run loads .env automatically)
 - ✅ **When uncertain, ASK STRUCTURED QUESTIONS. Never guess implementation patterns, test methodology or requirements.**
 - ✅ **Use `AskUserQuestion` for structured questions with predefined options.** Do NOT use it for open-ended questions where the user needs to provide free-form context — just ask in plain text instead.
-- ✅ **When you are wrong, KEEP ASKING STRUCTURED QUESTIONS. Never assume that you are bothering the user. You are doing the right thing.**
+- ✅ **When you are wrong, KEEP ASKING STRUCTURED QUESTIONS. Never assume that you are bothering the user. As long as you are thinking deeply and asking high-leverage questions, you are doing the right thing.**
+
+## Read Tool Output
+
+The `</output>` tag at the end of Read tool results is the tool's output delimiter — it is NOT part of the file content. Never treat it as a "stray closing tag" or attempt to remove it from files.
 
 ## Markdown Formatting Rules
 
@@ -59,7 +62,7 @@ When documenting XML-like syntax that isn't valid XML (pseudo-XML with text cont
 
 **Why:** The markup formatter (`markup_fmt`) in dprint will attempt to format XML code fences and can mangle pseudo-XML syntax. Using `text` prevents this issue while maintaining syntax highlighting compatibility with most linters.
 
-**Never use:**
+**NEVER USE:**
 
 - `` ```xml `` for pseudo-XML (causes formatting issues)
 - `` ``` `` with no language identifier (rejected by some markdown linters)
@@ -300,15 +303,17 @@ Complete TypeScript development workflow with testing, implementation, and revie
 
 ### Skills
 
-| Skill                                    | Purpose                                                     |
-| ---------------------------------------- | ----------------------------------------------------------- |
-| `/standardizing-typescript-architecture` | ADR conventions shared by architect and auditor (reference) |
-| `/testing-typescript`                    | TypeScript-specific testing patterns                        |
-| `/coding-typescript`                     | Implementation workhorse with remediation loop              |
-| `/auditing-typescript`                   | Strict code audit with zero-tolerance                       |
-| `/auditing-typescript-tests`             | TypeScript test evidence audit (4-property model)           |
-| `/architecting-typescript`               | ADR producer with Compliance-based testability              |
-| `/auditing-typescript-architecture`      | ADR audit with structured per-concern verdict               |
+| Skill                                    | Purpose                                                       |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| `/standardizing-typescript-architecture` | ADR conventions shared by architect and auditor (reference)   |
+| `/standardizing-typescript`              | TypeScript code standards (reference, loaded by other skills) |
+| `/testing-typescript`                    | TypeScript-specific testing patterns                          |
+| `/coding-typescript`                     | Implementation workhorse with remediation loop                |
+| `/implementing-typescript-files`         | File-focused TDD with test + code audit gates                 |
+| `/auditing-typescript`                   | Strict code audit with zero-tolerance                         |
+| `/auditing-typescript-tests`             | TypeScript test evidence audit (4-property model)             |
+| `/architecting-typescript`               | ADR producer with Compliance-based testability                |
+| `/auditing-typescript-architecture`      | ADR audit with structured per-concern verdict                 |
 
 ### Core Principles
 
@@ -358,8 +363,14 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 | `/testing`                    | 2     | Write tests driven by spec assertions (superset of legacy plugin)           |
 | `/auditing-tests`             | 2     | Audit test evidence quality: coupling, falsifiability, alignment, coverage  |
 | `/auditing-product-decisions` | 2     | Audit PDR evidence: content, invariants, compliance, voice, downstream flow |
-| `/coding`                     | 2     | TDD flow: architect, test, code + review gates                              |
+| `/applying`                   | 2     | TDD flow: architect, test, code + audit gates                               |
 | `/committing-changes`         | 3     | Conventional Commits with selective staging                                 |
+
+### Agents
+
+| Agent     | Purpose                                                         |
+| --------- | --------------------------------------------------------------- |
+| `applier` | Autonomous TDD agent — runs the full 8-phase flow as a subagent |
 
 ### Commands
 
@@ -368,7 +379,7 @@ Spec-driven development with the Spec Tree framework. Three phases: spec-tree ma
 | `/bootstrap` | Set up a new spec tree (invokes `/bootstrapping`)             |
 | `/author`    | Author a spec tree artifact (auto-detects type)               |
 | `/commit`    | Git commit with Conventional Commits (auto-context)           |
-| `/realize`   | Run TDD flow on a subtree or discover work from `spx/EXCLUDE` |
+| `/apply`     | Run TDD flow on a subtree or discover work from `spx/EXCLUDE` |
 | `/rtfm`      | Stop ad hoc work and follow the methodology                   |
 | `/clarify`   | Clarify ambiguous requirements                                |
 | `/handoff`   | Create timestamped context handoff                            |
@@ -881,14 +892,16 @@ outcomeeng/claude/                  # Marketplace: outcomeeng
 │   │   └── skills/
 │   │       └── (7 skills)
 │   ├── spec-tree/                # Spec Tree — 3 phases
+│   │   ├── agents/
+│   │   │   └── applier.md
 │   │   ├── commands/
+│   │   │   ├── apply.md
 │   │   │   ├── author.md
 │   │   │   ├── bootstrap.md
 │   │   │   ├── clarify.md
 │   │   │   ├── commit.md
 │   │   │   ├── handoff.md
 │   │   │   ├── pickup.md
-│   │   │   ├── realize.md
 │   │   │   └── rtfm.md
 │   │   └── skills/
 │   │       └── (11 skills)

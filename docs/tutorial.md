@@ -154,13 +154,13 @@ The skill extracts typed assertions from the spec, determines what test evidence
 
 ## 6. Implement with TDD
 
-The `/realize` command starts the full TDD flow — architecture, tests, then code — with review gates at each phase:
+The `/apply` command starts the full TDD flow — architecture, tests, then code — with review gates at each phase:
 
 ```text
-> /realize spx/21-auth.outcome
+> /apply spx/21-auth.outcome
 ```
 
-This invokes the `/coding` skill, which orchestrates 8 phases:
+This invokes the `/applying` skill, which orchestrates 8 phases:
 
 1. Load methodology (`/understanding`)
 2. Load work item context (`/contextualizing`)
@@ -171,9 +171,9 @@ This invokes the `/coding` skill, which orchestrates 8 phases:
 7. Implement — via `/coding-python` or `/coding-typescript`
 8. Review code — loop until APPROVED
 
-Without arguments, `/realize` determines work from conversation context or falls back to `spx/EXCLUDE`.
+Without arguments, `/apply` determines work from conversation context or falls back to `spx/EXCLUDE`.
 
-<!-- TODO: Add screenshot of /realize in action -->
+<!-- TODO: Add screenshot of /apply in action -->
 
 ## 7. Commit changes
 
@@ -252,7 +252,7 @@ This stops the current ad hoc work and restarts the proper TDD flow from Phase 1
 | **Decompose** | Break down large nodes                            | `/decomposing`                   |
 | **Align**     | Check consistency and quality                     | `/aligning`                      |
 | **Test**      | Write tests from spec assertions                  | `/testing`                       |
-| **Implement** | TDD flow: architect → test → code                 | `/realize`                       |
+| **Implement** | TDD flow: architect → test → code                 | `/apply`                         |
 | **Commit**    | Selective staging, Conventional Commits           | `/commit`                        |
 | **Hand off**  | Save context for next session                     | `/handoff` → `/pickup`           |
 | **Refactor**  | Restructure the tree                              | `/refactoring`                   |

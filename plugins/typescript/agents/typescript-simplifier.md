@@ -2,7 +2,7 @@
 name: typescript-simplifier
 description: Simplifies TypeScript code for clarity and maintainability. Validates test coverage and quality before modifying, ensures tests pass after. Operates on recently modified code.
 model: sonnet
-allowed-tools: [Read, Grep, Glob, Bash, Edit]
+tools: Read, Grep, Glob, Bash, Edit
 ---
 
 <role>

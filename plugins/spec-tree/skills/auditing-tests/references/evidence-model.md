@@ -234,6 +234,7 @@ Read the spec assertion and the test's expect/assert statements side by side.
 
 - **No coverage tooling**: Note as finding. Do not REJECT solely for this — the other three properties still apply.
 - **New module with 0% baseline**: Any coverage from the test is positive delta.
-- **Shared coverage**: Multiple tests may cover same paths. A test with zero delta may be legitimate if other tests already cover those paths AND this test verifies a different assertion. Check whether it increases coverage of the ASSERTION-RELEVANT paths specifically.
+- **Saturated coverage**: Baseline shows 100% line + branch coverage on assertion-relevant files. Zero delta is expected — there are no uncovered paths to hit. Coverage measures execution breadth, not assertion strength. A test that exercises fully-covered code with a stronger strategy (e.g., Hypothesis/fast-check over example-based) or broader input domain adds evidentiary value through its assertions, not through additional execution. The other three properties carry the evidence. Annotate as `saturated` in the verdict table.
+- **Shared coverage**: Multiple tests may cover same paths. If baseline is < 100%, a test with zero delta should still be hitting uncovered branches. If baseline is 100%, see saturated coverage above.
 
 </coverage_protocol>

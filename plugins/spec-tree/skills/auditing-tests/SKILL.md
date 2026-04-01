@@ -170,7 +170,13 @@ With test: src/config-parser.ts — 67.8%
 Delta: +24.6% — new coverage ✓
 ```
 
-**Zero delta on assertion-relevant files → REJECT — "no coverage increase."**
+**Interpret the delta:**
+
+- **Positive delta**: The test covers new lines or branches. ✓
+- **Zero delta, baseline < 100%**: REJECT — "no coverage increase." Uncovered paths exist and the test doesn't hit them.
+- **Zero delta, baseline = 100%**: Coverage is saturated — no uncovered paths exist. Annotate as `saturated` in the verdict table. The test's evidentiary value comes from the other three properties.
+
+Coverage measures execution breadth (which lines and branches are hit), not assertion strength. A property-based test that exercises fully-covered code with a broader input domain adds genuine evidence that coverage cannot measure.
 
 If the project has no coverage tooling configured: note as a finding but do not REJECT solely for this. The other three properties still apply.
 

@@ -406,7 +406,7 @@ How to avoid: Essential principles — no code quality checks. Check the four ev
 | **Alignment**      | Parser/serializer without `@given` roundtrip                | Alignment      |
 | **Alignment**      | Property assertion tested with only examples                | Alignment      |
 | **Alignment**      | Test exercises different behavior than assertion describes  | Alignment      |
-| **Coverage**       | Zero delta on assertion-relevant source files               | Coverage       |
+| **Coverage**       | Zero delta with baseline < 100% on assertion-relevant files | Coverage       |
 
 </rejection_triggers>
 

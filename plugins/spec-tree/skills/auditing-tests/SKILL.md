@@ -1,7 +1,8 @@
 ---
 name: auditing-tests
 description: >-
-  ALWAYS invoke this skill when auditing test evidence quality or verifying tests cover spec assertions.
+  ALWAYS invoke this skill when auditing test evidence quality, after writing tests for a spec node,
+  or before closing an outcome.
 ---
 
 <objective>

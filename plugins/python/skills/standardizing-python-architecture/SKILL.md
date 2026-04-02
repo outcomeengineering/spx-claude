@@ -29,6 +29,8 @@ The ADR template (from `/understanding`) defines exactly these sections:
 
 **This is the complete list.** An ADR has no other sections. There is no "Testing Strategy" section, no "Status" field, no "Level Assignments" table. Testability constraints live in Compliance as MUST/NEVER rules.
 
+**When an ADR is required:** Every module that makes architectural decisions — module layout, library choice, DI patterns — requires an ADR. The absence of an ADR is itself a violation, not a reason to skip the audit.
+
 </adr_sections>
 
 <testability_in_compliance>

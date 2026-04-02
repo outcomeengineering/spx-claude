@@ -155,12 +155,19 @@ What did you learn during this session that changes how future agents should wor
 - **Methodology gaps** — skills that were inadequate or missing. What should change?
 - **Coding patterns** — patterns that worked or failed. What should be codified?
 
-For each lesson, determine persistence target:
+For each lesson, classify by nature to determine the correct persistence target:
 
-- Amend a spec (if a spec was wrong or incomplete)
-- Update CLAUDE.md (if it's a project-wide rule)
-- Update a skill (if it's a methodology gap)
-- Session file only (if it's task-specific)
+| Lesson nature         | Signal                                                       | Destination                                                                         |
+| --------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| **Library / API**     | API change, library behavior, version gotcha                 | Language plugin `coding-*` skill references (e.g., `coding-typescript/references/`) |
+| **Methodology**       | Skill invocation order, audit interpretation, process error  | Spec-tree plugin skill (amend skill instructions)                                   |
+| **Project rule**      | Convention specific to this codebase, forbidden pattern      | Project `CLAUDE.md`                                                                 |
+| **Interaction style** | Response format, verbosity, tone — NOT coding patterns       | Memory (`feedback` type)                                                            |
+| **Domain knowledge**  | Who's doing what, external system locations, project context | Memory (`project`/`reference` type)                                                 |
+| **Spec correction**   | Assertion was wrong or incomplete                            | Amend the spec file directly                                                        |
+| **Task-specific**     | Only relevant to this session's work                         | Session file only                                                                   |
+
+**The nature determines the target — not the other way around.** A library API change belongs in a coding skill reference even if you discovered it in this project. A coding pattern the auditor would reject belongs in `standardizing-*`, not `coding-*`.
 
 ### Perspective 2: Deficiencies identified
 
@@ -221,7 +228,7 @@ Present the combined output of all five perspectives as a single `AskUserQuestio
     "header": "Persist",
     "multiSelect": true,
     "options": [
-      { "label": "[Lesson] summary", "description": "→ target: CLAUDE.md / spec / skill (with reason)" },
+      { "label": "[Lesson → destination] summary", "description": "→ target named by nature (e.g., 'coding-typescript refs', 'CLAUDE.md', 'standardizing-typescript')" },
       { "label": "[Issue] summary", "description": "→ target: fix spec / ISSUES.md in spx/{node}" },
       { "label": "[Insight] summary", "description": "→ target: amend spec / PLAN.md in spx/{node} / remove stale PLAN.md" },
       { "label": "[Skip] N items", "description": "→ session file only (coordination context)" }
@@ -229,6 +236,17 @@ Present the combined output of all five perspectives as a single `AskUserQuestio
   }]
 }
 ```
+
+**Lesson labels MUST include the destination type** from the Perspective 1 taxonomy. Examples:
+
+```text
+☑ [Lesson → coding-typescript refs] fast-check v4: fc.stringOf → fc.string({ unit: ... })
+☑ [Lesson → standardizing-typescript-arch] ADR audit: 'no ADR exists' is REJECT, not N/A
+☑ [Lesson → spec-tree plugin] Invoke /contextualizing before suggesting handoff
+☑ [Lesson → CLAUDE.md] Require git mv for file moves
+```
+
+This lets the user verify at a glance that each lesson is going to the right place.
 
 Items the user does not select are included in the session file's `<coordination>` section as ephemeral context. Items the user selects are written in Phase 4.
 
@@ -360,7 +378,7 @@ Nodes worked on:
 
 Agent works through all five perspectives internally:
 
-1. **Lessons**: User corrected import pattern twice — relative imports where absolute were required. Rule: "always use absolute imports from the package root." Also: `tempfile.NamedTemporaryFile` needs `delete=False` on Windows — a coding pattern worth codifying.
+1. **Lessons**: User corrected import pattern twice — relative imports where absolute were required. Rule: "always use absolute imports from the package root." Also: `tempfile.NamedTemporaryFile` needs `delete=False` on Windows — a library gotcha worth persisting.
 2. **Deficiencies**: No existing ISSUES.md. The `43-fixtures.enabler` spec has 5 assertions but 2 are untestable without the implementation — not a deficiency, just the TDD sequence.
 3. **Insights**: Existing PLAN.md in `43-fixtures.enabler` is stale — steps 1-3 are complete, only steps 4-5 remain. The approach (context managers over explicit cleanup) was validated and should stay.
 4. **Skills**: Used `/testing-python`, skipped `/coding-python` on first attempt which caused import violations. Next agent must invoke `/coding-python` before writing implementation.
@@ -374,8 +392,8 @@ Agent presents:
 AskUserQuestion (multiSelect: true):
 "Review persistence proposal — select items to approve:"
 
-☑ [Lesson] Add to CLAUDE.md: "always use absolute imports from package root"
-☑ [Lesson] Add to CLAUDE.md: "tempfile.NamedTemporaryFile needs delete=False on Windows"
+☑ [Lesson → CLAUDE.md] Always use absolute imports from package root
+☑ [Lesson → coding-python refs] tempfile.NamedTemporaryFile needs delete=False on Windows
 ☑ [Insight] Update PLAN.md in 43-fixtures.enabler: remove completed steps 1-3, keep 4-5
 ☐ [Skip] 2 items → session file only (skills audit, coordination)
 ```
@@ -384,7 +402,7 @@ User approves first three items.
 
 **Phase 4: Execute and hand off**
 
-1. Writes both CLAUDE.md entries
+1. Writes CLAUDE.md entry (absolute imports), adds tempfile caveat to `coding-python/references/`
 2. Updates PLAN.md — removes steps 1-3, keeps steps 4-5
 3. Records git state: `32-temp-files.enabler` committed, `43-fixtures.enabler/tests/` uncommitted
 4. Creates session file:
@@ -445,7 +463,7 @@ What was captured durably during session closure.
 
 - Committed: `spx/21-test-harness.enabler/32-temp-files.enabler/` (spec + tests + implementation)
 - Uncommitted: `spx/21-test-harness.enabler/43-fixtures.enabler/tests/` (2 test files)
-- Insights: Added Windows tempfile caveat to CLAUDE.md
+- Insights: Added absolute imports rule to CLAUDE.md; added Windows tempfile caveat to `coding-python/references/`
 - Escape hatches: PLAN.md in `spx/21-test-harness.enabler/43-fixtures.enabler/`
 
 </persisted>

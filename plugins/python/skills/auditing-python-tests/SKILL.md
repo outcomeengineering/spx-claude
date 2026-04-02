@@ -1,7 +1,8 @@
 ---
 name: auditing-python-tests
 description: >-
-  ALWAYS invoke this skill when auditing tests for Python.
+  ALWAYS invoke this skill when auditing tests for Python or after writing tests.
+  NEVER use auditing-python for test code.
 ---
 
 <objective>

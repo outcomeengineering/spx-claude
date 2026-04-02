@@ -163,9 +163,15 @@ describe("TestComplexBehavior", () => {
 4. **Part 3 discovers gaps** - Parametrized test failure reveals missing category
 5. **Part 4 uses fast-check** - For comprehensive property testing
 
+## fast-check Version Gotchas
+
+- `fc.stringOf(arbitrary)` was **removed in fast-check v4**. Use `fc.string({ unit: arbitrary })` instead.
+- The Part 4 examples above use the v4 API. If you see `fc.stringOf` in existing code, it needs migration.
+
 ## Anti-Patterns
 
 - ❌ Starting with property tests - No context when it fails
 - ❌ Inline test data - Not reusable, no names
 - ❌ Testing subset of cases - Part 3 must test ALL
 - ❌ Random without seed - Use fast-check's `seed` option for reproducibility
+- ❌ Using `fc.stringOf()` - Removed in v4; use `fc.string({ unit: ... })`

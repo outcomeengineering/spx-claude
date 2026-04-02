@@ -1,7 +1,7 @@
 ---
 name: auditing-product-decisions
 description: >-
-  ALWAYS invoke this skill when auditing PDRs.
+  ALWAYS invoke this skill when auditing PDRs or after writing a PDR.
   NEVER audit PDRs without this skill.
 ---
 

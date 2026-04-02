@@ -1,7 +1,8 @@
 ---
 name: auditing-typescript-tests
 description: >-
-  ALWAYS invoke this skill when auditing tests for TypeScript.
+  ALWAYS invoke this skill when auditing tests for TypeScript or after writing tests.
+  NEVER use auditing-typescript for test code.
 ---
 
 <objective>

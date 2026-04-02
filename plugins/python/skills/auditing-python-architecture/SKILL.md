@@ -1,7 +1,8 @@
 ---
 name: auditing-python-architecture
 description: >-
-  ALWAYS invoke this skill when auditing ADRs for Python.
+  ALWAYS invoke this skill when auditing ADRs for Python or after writing an ADR.
+  NEVER implement from an unaudited ADR.
 allowed-tools: Read, Grep
 ---
 
@@ -42,15 +43,16 @@ If you're reviewing ADRs for a spec-tree work item (enabler/outcome), ensure com
 
 1. **Read `/standardizing-python-architecture`** for canonical conventions
 2. **Read `/testing`** for methodology (5 stages, 5 factors, 7 exceptions)
-3. **Read the ADR** completely
-4. **Check section structure** -- only authoritative sections allowed (Purpose, Context, Decision, Rationale, Trade-offs accepted, Invariants, Compliance). Flag phantom sections (Testing Strategy, Status, etc.)
-5. **Check EVERY section for temporal language** -- reject any reference to current code, existing files, or migration plans
-6. **Check Compliance section** -- must include testability constraints as MUST/NEVER rules; must NOT include level assignment tables
-7. **Check for mocking language** -- reject unittest.mock.patch, respx.mock, "mock at boundary" in any section
-8. **Verify level accuracy** -- SaaS services jump L1 to L3 (no Level 2)
-9. **Check test double usage** -- must document which `/testing` exception case applies
-10. **Identify all violations** and classify per concern
-11. **Output structured verdict** -- APPROVED or REJECTED with per-concern table
+3. **Verify an ADR exists.** If the module makes architectural decisions (module layout, library choice, DI patterns) without an ADR, the absence is the violation — REJECT immediately. Do not treat missing ADRs as N/A.
+4. **Read the ADR** completely
+5. **Check section structure** -- only authoritative sections allowed (Purpose, Context, Decision, Rationale, Trade-offs accepted, Invariants, Compliance). Flag phantom sections (Testing Strategy, Status, etc.)
+6. **Check EVERY section for temporal language** -- reject any reference to current code, existing files, or migration plans
+7. **Check Compliance section** -- must include testability constraints as MUST/NEVER rules; must NOT include level assignment tables
+8. **Check for mocking language** -- reject unittest.mock.patch, respx.mock, "mock at boundary" in any section
+9. **Verify level accuracy** -- SaaS services jump L1 to L3 (no Level 2)
+10. **Check test double usage** -- must document which `/testing` exception case applies
+11. **Identify all violations** and classify per concern
+12. **Output structured verdict** -- APPROVED or REJECTED with per-concern table
 
 </process>
 

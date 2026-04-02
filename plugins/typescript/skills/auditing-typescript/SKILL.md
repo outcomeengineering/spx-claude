@@ -1,7 +1,8 @@
 ---
 name: auditing-typescript
 description: >-
-  ALWAYS invoke this skill when auditing code for TypeScript.
+  ALWAYS invoke this skill when auditing code for TypeScript or after writing code.
+  NEVER modify a spec to match code without auditing the code first.
 allowed-tools: Read, Bash, Glob, Grep
 ---
 

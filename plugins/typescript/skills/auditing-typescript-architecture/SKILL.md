@@ -1,7 +1,8 @@
 ---
 name: auditing-typescript-architecture
 description: >-
-  ALWAYS invoke this skill when auditing ADRs for TypeScript.
+  ALWAYS invoke this skill when auditing ADRs for TypeScript or after writing an ADR.
+  NEVER implement from an unaudited ADR.
 allowed-tools: Read, Grep
 ---
 
@@ -41,13 +42,14 @@ If you're reviewing ADRs for a spec-tree work item (enabler/outcome), ensure com
 <process>
 
 1. **Read `/standardizing-typescript-architecture`** for canonical conventions
-2. **Read the ADR** completely
-3. **Check section structure** -- only authoritative sections allowed (Purpose, Context, Decision, Rationale, Trade-offs accepted, Invariants, Compliance). Flag phantom sections (Testing Strategy, Status, etc.)
-4. **Check EVERY section for temporal language** -- reject any reference to current code, existing files, or migration plans
-5. **Check Compliance section** -- must include testability constraints as MUST/NEVER rules; must NOT include level assignment tables
-6. **Check for mocking language** -- reject vi.mock(), jest.mock(), "mock at boundary" in any section
-7. **Identify all violations** and classify per concern
-8. **Output structured verdict** -- APPROVED or REJECTED with per-concern table
+2. **Verify an ADR exists.** If the module makes architectural decisions (module layout, library choice, DI patterns) without an ADR, the absence is the violation — REJECT immediately. Do not treat missing ADRs as N/A.
+3. **Read the ADR** completely
+4. **Check section structure** -- only authoritative sections allowed (Purpose, Context, Decision, Rationale, Trade-offs accepted, Invariants, Compliance). Flag phantom sections (Testing Strategy, Status, etc.)
+5. **Check EVERY section for temporal language** -- reject any reference to current code, existing files, or migration plans
+6. **Check Compliance section** -- must include testability constraints as MUST/NEVER rules; must NOT include level assignment tables
+7. **Check for mocking language** -- reject vi.mock(), jest.mock(), "mock at boundary" in any section
+8. **Identify all violations** and classify per concern
+9. **Output structured verdict** -- APPROVED or REJECTED with per-concern table
 
 </process>
 

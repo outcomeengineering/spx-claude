@@ -1,7 +1,7 @@
 ---
 name: handoff
 description: Create timestamped handoff document for continuing work in a fresh context
-argument-hint: [--prune]
+argument-hint: [--no-session] [--prune]
 allowed-tools:
   - Read
   - Write
@@ -103,9 +103,13 @@ The session files are Markdown files within subdirectories of the base `.spx/ses
 
 <arguments>
 
-**`--prune`**: After successfully writing the new handoff, delete old **archive** sessions to prevent accumulation. Does NOT touch the todo queue.
+**`--no-session`**: Run the full reflection and persistence protocol (phases 1–3) but skip session file creation in phase 4. All approved items are persisted to their durable targets (specs, CLAUDE.md, skills, memory, escape hatches). Unapproved items are dropped — there is no session file to hold them.
 
-Check for prune flag: `$ARGUMENTS` will contain `--prune` if present.
+Use `--no-session` (or the `/release` alias) when closing a session without handing off to another agent — the work is either complete or the durable persistence is sufficient for any future agent to reconstruct context via `/contextualizing`.
+
+**`--prune`**: After successfully writing the new handoff, delete old **archive** sessions to prevent accumulation. Does NOT touch the todo queue. Ignored when `--no-session` is set.
+
+Check for flags: `$ARGUMENTS` will contain `--no-session` and/or `--prune` if present.
 
 **Note:** Prune only affects archive sessions. Todo sessions are the shared work queue for all agents.
 
@@ -248,7 +252,7 @@ Present the combined output of all five perspectives as a single `AskUserQuestio
 
 This lets the user verify at a glance that each lesson is going to the right place.
 
-Items the user does not select are included in the session file's `<coordination>` section as ephemeral context. Items the user selects are written in Phase 4.
+Items the user selects are written in Phase 4. Items the user does not select are included in the session file's `<coordination>` section as ephemeral context — or dropped entirely if `--no-session` is set.
 
 **AskUserQuestion is limited to 4 options.** If there are more than 3 actionable items, batch them by perspective (one question per perspective with items as options). The "[Skip]" option always appears as the last option in the last question.
 
@@ -267,7 +271,11 @@ For each approved item from Phase 3:
 
 For each anchored node, check `git status` and record what is committed vs uncommitted. Do NOT commit — that is `/commit`'s job.
 
-### Step 3: Create session file
+### Step 3: Create session file (skip if `--no-session`)
+
+**If `--no-session` is set:** Skip this entire step. Archive any claimed doing session (step 3.5 below), then confirm: "Session released. All approved items persisted to durable targets. No session file created."
+
+**Otherwise, proceed with session file creation:**
 
 1. **Check for claimed session**: Search conversation for `<PICKUP_ID>` marker from `spx session pickup`. This is the doing session to archive after creating the new handoff.
 
